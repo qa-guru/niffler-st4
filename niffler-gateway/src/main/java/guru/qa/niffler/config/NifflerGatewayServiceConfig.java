@@ -1,0 +1,49 @@
+package guru.qa.niffler.config;
+
+import guru.qa.niffler.service.ws.SoapUserDataClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Configuration
+public class NifflerGatewayServiceConfig {
+
+    public static final int TEN_MB = 10 * 1024 * 1024;
+    public static final int ONE_MB = 1024 * 1024;
+
+    private final String nifflerUserdataBaseUri;
+
+    @Autowired
+    public NifflerGatewayServiceConfig(@Value("${niffler-userdata.base-uri}") String nifflerUserdataBaseUri) {
+        this.nifflerUserdataBaseUri = nifflerUserdataBaseUri;
+    }
+
+    @Bean
+    public WebClient webClient() {
+        return WebClient.builder()
+                .exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(TEN_MB))
+                        .build())
+                .build();
+    }
+
+    @Bean
+    public Jaxb2Marshaller marshaller() {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        marshaller.setContextPath("guru.qa.niffler.userdata.wsdl");
+        return marshaller;
+    }
+
+    @Bean
+    public SoapUserDataClient userDataClient(Jaxb2Marshaller marshaller) {
+        SoapUserDataClient client = new SoapUserDataClient();
+        client.setDefaultUri(nifflerUserdataBaseUri + "/ws");
+        client.setMarshaller(marshaller);
+        client.setUnmarshaller(marshaller);
+        return client;
+    }
+}
