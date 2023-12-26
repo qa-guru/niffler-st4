@@ -17,8 +17,6 @@ public @interface GenerateSpend {
 
   String description();
 
-  String category();
-
   double amount();
 
   CurrencyValues currency();
