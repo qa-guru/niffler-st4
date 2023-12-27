@@ -1,20 +1,19 @@
 package guru.qa.niffler.test;
 
+import guru.qa.niffler.jupiter.GenerateCategory;
 import guru.qa.niffler.jupiter.GenerateSpend;
-import guru.qa.niffler.jupiter.SpendExtension;
-import guru.qa.niffler.jupiter.SpendResolverExtension;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import static com.codeborne.selenide.CollectionCondition.size;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class SpendingTest extends BaseTest {
 
+    @GenerateCategory(
+            username = "duck",
+            category = "Обучение"
+    )
     @GenerateSpend(
             username = "duck",
             description = "QA.GURU Advanced 4",
