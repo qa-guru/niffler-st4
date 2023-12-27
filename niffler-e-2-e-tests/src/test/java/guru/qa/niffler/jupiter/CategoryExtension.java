@@ -9,6 +9,7 @@ import org.junit.platform.commons.support.AnnotationSupport;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CategoryExtension implements BeforeEachCallback {
@@ -34,6 +35,16 @@ public class CategoryExtension implements BeforeEachCallback {
 
         if (category.isPresent()) {
             GenerateCategory categoryData = category.get();
+
+            List<CategoryJson> categories = categoryApi.getCategories(categoryData.username()).execute().body();
+
+            for (CategoryJson categoryJson : categories) {
+                if (categoryJson.category().equals(categoryData.category())) {
+                    extensionContext.getStore(NAMESPACE).put("category", categoryJson);
+                    return;
+                }
+            }
+
             CategoryJson categoryJson = new CategoryJson(
                     null,
                     categoryData.category(),
