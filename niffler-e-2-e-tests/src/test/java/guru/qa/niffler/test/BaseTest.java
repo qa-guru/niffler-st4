@@ -8,8 +8,6 @@ import guru.qa.niffler.ui.pages.WelcomePage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-import static com.codeborne.selenide.Selenide.$;
-
 public class BaseTest {
     public MainPage mainPage = new MainPage();
     public LoginPage loginPage = new LoginPage();

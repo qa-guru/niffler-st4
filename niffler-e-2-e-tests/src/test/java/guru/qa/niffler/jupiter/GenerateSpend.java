@@ -17,7 +17,7 @@ public @interface GenerateSpend {
 
   String description();
 
-  String category();
+  String category() default "unassigned";
 
   double amount();
 

@@ -18,7 +18,6 @@ public class SpendingTest extends BaseTest {
             username = "duck",
             description = "QA.GURU Advanced 4",
             amount = 72500.00,
-            category = "Обучение",
             currency = CurrencyValues.RUB
     )
     @Test
