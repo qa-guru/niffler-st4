@@ -1,6 +1,7 @@
 package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Configuration;
+import guru.qa.niffler.jupiter.GenerateCategory;
 import guru.qa.niffler.jupiter.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
@@ -19,6 +20,9 @@ public class SpendingTest {
     private final LoginPage loginPage = new LoginPage();
     private final MainPage mainPage = new MainPage();
 
+    @GenerateCategory(
+            username = "duck",
+            category = "Обучение")
     @GenerateSpend(
             username = "duck",
             description = "QA.GURU Advanced 4",
