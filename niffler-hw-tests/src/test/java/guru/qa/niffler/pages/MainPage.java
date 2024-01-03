@@ -14,8 +14,7 @@ public class MainPage {
 
     public void selectSpendingByDescription(String description) {
         spendings.find(text(description))
-                .$$("td")
-                .first()
+                .$("td")
                 .scrollTo()
                 .click();
     }
@@ -24,7 +23,7 @@ public class MainPage {
         deleteSelectedButton.click();
     }
 
-    public void numberOfSpendingsShouldBe(int spendingsSize) {
-        spendings.shouldHave(size(spendingsSize));
+    public void spendingsTableShouldHaveSize(int expectedSize) {
+        spendings.shouldHave(size(expectedSize));
     }
 }

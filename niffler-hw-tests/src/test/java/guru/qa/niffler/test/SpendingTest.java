@@ -43,6 +43,6 @@ public class SpendingTest {
   void spendingShouldBeDeletedByButtonDeleteSpending(SpendJson spend) {
     mainPage.selectSpendingByDescription(spend.description());
     mainPage.clickDeleteSelectedButton();
-    mainPage.numberOfSpendingsShouldBe(0);
+    mainPage.spendingsTableShouldHaveSize(0);
   }
 }
