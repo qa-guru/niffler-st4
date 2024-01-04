@@ -2,6 +2,7 @@ package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import guru.qa.niffler.jupiter.DisabledByIssue;
 import guru.qa.niffler.jupiter.GenerateCategory;
 import guru.qa.niffler.jupiter.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
@@ -12,7 +13,7 @@ import guru.qa.niffler.pages.WelcomePage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class SpendingTest {
+public class SpendingTest extends BaseWebTest {
   public WelcomePage welcomePage = new WelcomePage();
   public LoginPage loginPage = new LoginPage();
   public MainPage mainPage = new MainPage();
@@ -39,6 +40,7 @@ public class SpendingTest {
       category = "Обучение",
       currency = CurrencyValues.RUB
   )
+  @DisabledByIssue("2")
   @Test
   void spendingShouldBeDeletedByButtonDeleteSpending(SpendJson spend) {
     mainPage.selectSpendingByDescription(spend.description());
