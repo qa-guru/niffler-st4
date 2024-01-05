@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static guru.qa.niffler.jupiter.User.UserType.*;
 
 @ExtendWith(UsersQueueExtension.class)
-public class FriendsTest extends BaseWebTest{
+public class FriendsWithoutBeforeEachParamTest extends BaseWebTest{
     public WelcomePage welcomePage = new WelcomePage();
     public LoginPage loginPage = new LoginPage();
     public TopMenu topMenu = new TopMenu();
@@ -21,53 +21,29 @@ public class FriendsTest extends BaseWebTest{
     public PeoplePage peoplePage = new PeoplePage();
 
     @BeforeEach
-    void doLogin(@User(WITH_FRIENDS) UserJson user) {
+    void doLogin() {
         Selenide.open("http://127.0.0.1:3000/main");
         welcomePage.clickLoginLink();
+    }
+
+    @Test
+    void friendsShouldBeDisplayed(@User(WITH_FRIENDS) UserJson user) throws Exception {
         loginPage.login(user.username(), user.testData().password());
-    }
-
-    @Test
-    void friendsTableShouldNotBeEmpty0(@User(WITH_FRIENDS) UserJson user) throws Exception {
-        Thread.sleep(3000);
-    }
-
-    @Test
-    void friendsTableShouldNotBeEmpty1(@User(WITH_FRIENDS) UserJson user) throws Exception {
-        Thread.sleep(3000);
-    }
-
-    @Test
-    void friendsTableShouldNotBeEmpty2(@User(WITH_FRIENDS) UserJson user) throws Exception {
-        Thread.sleep(3000);
-    }
-
-    @Test
-    void friendsShouldBeDisplayed(@User(WITH_FRIENDS) UserJson user) {
         topMenu.clickFriendsTopMenu();
         friendsPage.friendShouldBeDisplayed();
     }
 
     @Test
-    void requestSentShouldBeDisplayed(@User(REQUEST_SENT) UserJson user) {
+    void requestSentShouldBeDisplayed(@User(REQUEST_SENT) UserJson user) throws Exception {
+        loginPage.login(user.username(), user.testData().password());
         topMenu.clickPeopleTopMenu();
         peoplePage.requestSentShouldBeDisplayed();
     }
 
     @Test
-    void requestReceivedShouldBeDisplayed0(@User(REQUEST_RECEIVED) UserJson user) {
+    void requestReceivedShouldBeDisplayed(@User(REQUEST_RECEIVED) UserJson user) throws Exception {
+        loginPage.login(user.username(), user.testData().password());
         topMenu.clickFriendsTopMenu();
         friendsPage.requestReceivedShouldBeDisplayed();
-    }
-
-    @Test
-    void requestReceivedShouldBeDisplayed1(@User(REQUEST_RECEIVED) UserJson user) {
-        topMenu.clickFriendsTopMenu();
-        friendsPage.requestReceivedShouldBeDisplayed();
-    }
-
-    @Test
-    void testWithoutParam() throws Exception {
-        Thread.sleep(3000);
     }
 }
