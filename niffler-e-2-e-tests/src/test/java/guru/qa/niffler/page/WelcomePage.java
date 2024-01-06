@@ -28,6 +28,7 @@ public class WelcomePage {
         Selenide.open(MAIN_URL);
         return this.waitUntilLoaded();
     }
+
     @Step("Нажать кнопку 'Login' и перейти на страницу авторизации")
     public LoginPage clickLoginAndGoToLoginPage() {
         loginButton.click();

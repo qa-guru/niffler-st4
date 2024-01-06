@@ -4,7 +4,8 @@ import guru.qa.niffler.api.SpendApi;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.SpendJson;
 import okhttp3.OkHttpClient;
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.support.AnnotationSupport;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -14,46 +15,44 @@ import java.util.Optional;
 
 public class SpendExtension implements BeforeEachCallback {
 
-  public static final ExtensionContext.Namespace NAMESPACE
-          = ExtensionContext.Namespace.create(SpendExtension.class);
+    public static final ExtensionContext.Namespace NAMESPACE
+            = ExtensionContext.Namespace.create(SpendExtension.class);
 
-  private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
-  private static final Retrofit retrofit = new Retrofit.Builder()
-          .client(httpClient)
-          .baseUrl("http://127.0.0.1:8093")
-          .addConverterFactory(JacksonConverterFactory.create())
-          .build();
+    private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
+    private static final Retrofit retrofit = new Retrofit.Builder()
+            .client(httpClient)
+            .baseUrl("http://127.0.0.1:8093")
+            .addConverterFactory(JacksonConverterFactory.create())
+            .build();
 
-  private final SpendApi spendApi = retrofit.create(SpendApi.class);
+    private final SpendApi spendApi = retrofit.create(SpendApi.class);
 
-  @Override
-  public void beforeEach(ExtensionContext extensionContext) throws Exception {
-    Optional<GenerateSpend> spend = AnnotationSupport.findAnnotation(
-            extensionContext.getRequiredTestMethod(),
-            GenerateSpend.class
-    );
+    @Override
+    public void beforeEach(ExtensionContext extensionContext) throws Exception {
+        Optional<GenerateSpend> spend = AnnotationSupport.findAnnotation(
+                extensionContext.getRequiredTestMethod(),
+                GenerateSpend.class
+        );
 
-    if (spend.isPresent()) {
-      GenerateSpend spendData = spend.get();
+        if (spend.isPresent()) {
+            GenerateSpend spendData = spend.get();
 
-      CategoryJson categoryFromExtension = (CategoryJson) extensionContext
-              .getStore(CategoryExtension.NAMESPACE).get(extensionContext.getUniqueId());;
+            CategoryJson categoryFromExtension = (CategoryJson) extensionContext
+                    .getStore(CategoryExtension.NAMESPACE).get(extensionContext.getUniqueId());
 
-      SpendJson spendJson = new SpendJson(
-              null,
-              new Date(),
-              categoryFromExtension.category(),
-              spendData.currency(),
-              spendData.amount(),
-              spendData.description(),
-              spendData.username()
-      );
+            SpendJson spendJson = new SpendJson(
+                    null,
+                    new Date(),
+                    categoryFromExtension.category(),
+                    spendData.currency(),
+                    spendData.amount(),
+                    spendData.description(),
+                    spendData.username()
+            );
 
-      SpendJson created = spendApi.addSpend(spendJson).execute().body();
-      extensionContext.getStore(NAMESPACE)
-              .put(extensionContext.getUniqueId(), created);
+            SpendJson created = spendApi.addSpend(spendJson).execute().body();
+            extensionContext.getStore(NAMESPACE)
+                    .put(extensionContext.getUniqueId(), created);
+        }
     }
-  }
-
-
 }

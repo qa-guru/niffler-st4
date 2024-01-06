@@ -12,17 +12,17 @@ import java.io.InputStream;
 
 public class SpendJsonConverter implements ArgumentConverter {
 
-  private static final ObjectMapper om = new ObjectMapper();
+    private static final ObjectMapper om = new ObjectMapper();
 
-  @Override
-  public Object convert(Object o, ParameterContext parameterContext) throws ArgumentConversionException {
-    if (o instanceof String path) {
-      try (InputStream is = new ClassPathResource(path).getInputStream()) {
-        return om.readValue(is, SpendJson.class);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+    @Override
+    public Object convert(Object o, ParameterContext parameterContext) throws ArgumentConversionException {
+        if (o instanceof String path) {
+            try (InputStream is = new ClassPathResource(path).getInputStream()) {
+                return om.readValue(is, SpendJson.class);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        throw new RuntimeException("can`t convert to SpendJson");
     }
-    throw new RuntimeException("can`t convert to SpendJson");
-  }
 }
