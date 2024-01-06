@@ -9,6 +9,7 @@ services:
       - PGUSER=postgres
       - POSTGRES_PASSWORD=secret
     volumes:
+      - pgdata:/var/lib/postgresql/data
       - ./postgres:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "postgres" ]
