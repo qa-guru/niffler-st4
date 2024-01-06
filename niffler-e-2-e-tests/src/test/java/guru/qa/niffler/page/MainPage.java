@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class MainPage {
 
-    private final static String HEADER_TEXT = "Niffler. The coin keeper.";
+    private static final String HEADER_TEXT = "Niffler. The coin keeper.";
 
     private final SelenideElement
             header = $("h1[class=header__title]"),
@@ -30,8 +30,8 @@ public class MainPage {
     @Step("Выделить строку в таблице расходов с описанием {description}")
     public MainPage selectSpendByDescription(String description) {
         spendRows.find(text(description))
-                .$$("td")
-                .first().scrollTo()
+                .$("td")
+                .scrollTo()
                 .click();
         return this;
     }

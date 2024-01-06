@@ -17,14 +17,14 @@ public class SpendExtension implements BeforeEachCallback {
   public static final ExtensionContext.Namespace NAMESPACE
       = ExtensionContext.Namespace.create(SpendExtension.class);
 
-  private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
-  private static final Retrofit retrofit = new Retrofit.Builder()
-      .client(httpClient)
+  private static final OkHttpClient HTTP_CLIENT = new OkHttpClient.Builder().build();
+  private static final Retrofit RETROFIT = new Retrofit.Builder()
+      .client(HTTP_CLIENT)
       .baseUrl("http://127.0.0.1:8093")
       .addConverterFactory(JacksonConverterFactory.create())
       .build();
 
-  private final SpendApi spendApi = retrofit.create(SpendApi.class);
+  private final SpendApi spendApi = RETROFIT.create(SpendApi.class);
 
   @Override
   public void beforeEach(ExtensionContext extensionContext) throws Exception {

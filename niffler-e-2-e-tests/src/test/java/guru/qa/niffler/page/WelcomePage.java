@@ -8,8 +8,8 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class WelcomePage {
-    private final static String URL = "http://127.0.0.1:3000/main";
-    private final static String HEADER_TEXT = "Welcome to magic journey with Niffler. The coin keeper";
+    private static final String URL = "http://127.0.0.1:3000/main";
+    private static final String HEADER_TEXT = "Welcome to magic journey with Niffler. The coin keeper";
 
     private final SelenideElement
             header = $("h1[class=main__header]"),
@@ -23,7 +23,8 @@ public class WelcomePage {
     }
 
     @Step("Нажать на кнопку Login")
-    public void clickLogin() {
+    public LoginPage clickLogin() {
         loginButton.click();
+        return new LoginPage();
     }
 }

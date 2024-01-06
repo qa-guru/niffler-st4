@@ -16,14 +16,14 @@ public class CategoryExtension implements BeforeEachCallback, ParameterResolver 
 
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CategoryExtension.class);
 
-    private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
-    private static final Retrofit retrofit = new Retrofit.Builder()
-            .client(httpClient)
+    private static final OkHttpClient HTTP_CLIENT = new OkHttpClient.Builder().build();
+    private static final Retrofit RETROFIT = new Retrofit.Builder()
+            .client(HTTP_CLIENT)
             .baseUrl("http://127.0.0.1:8093")
             .addConverterFactory(JacksonConverterFactory.create())
             .build();
 
-    private final CategoryApi categoryApi = retrofit.create(CategoryApi.class);
+    private final CategoryApi categoryApi = RETROFIT.create(CategoryApi.class);
 
     @Override
     public void beforeEach(ExtensionContext context) throws IOException {

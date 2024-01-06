@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage {
 
-    private final static String HEADER_TEXT = "Welcome to Niffler. The coin keeper";
+    private static final String HEADER_TEXT = "Welcome to Niffler. The coin keeper";
 
     private final SelenideElement
             header = $("h1[class=form__header]"),
