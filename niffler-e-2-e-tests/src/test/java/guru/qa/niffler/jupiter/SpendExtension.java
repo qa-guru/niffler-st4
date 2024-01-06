@@ -38,13 +38,13 @@ public class SpendExtension implements BeforeEachCallback {
     if (spend.isPresent()) {
 
       CategoryJson categoryJson = extensionContext.getStore(CategoryExtension.NAMESPACE)
-          .get("category", CategoryJson.class);
+          .get(extensionContext.getUniqueId(), CategoryJson.class);
 
       GenerateSpend spendData = spend.get();
       SpendJson spendJson = new SpendJson(
           null,
           new Date(),
-          Objects.isNull(categoryJson) ? spendData.category() : categoryJson.category(),
+          categoryJson.category(),
           spendData.currency(),
           spendData.amount(),
           spendData.description(),
@@ -53,7 +53,7 @@ public class SpendExtension implements BeforeEachCallback {
 
       SpendJson created = spendApi.addSpend(spendJson).execute().body();
       extensionContext.getStore(NAMESPACE)
-          .put("spend", created);
+          .put(extensionContext.getUniqueId(), created);
     }
   }
 }

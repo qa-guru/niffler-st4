@@ -12,10 +12,11 @@ public class LoginPage {
 
   private SelenideElement signInBtn = $("button[type='submit']");
 
-  public void loginByUserAndPassword(String user, String password) {
+  public LoginPage loginByUserAndPassword(String user, String password) {
     userNameField.setValue(user);
     passwordField.setValue(password);
     signInBtn.click();
+    return this;
 
   }
 

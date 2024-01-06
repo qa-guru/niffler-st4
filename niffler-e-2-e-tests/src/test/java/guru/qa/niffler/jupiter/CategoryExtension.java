@@ -1,8 +1,8 @@
 package guru.qa.niffler.jupiter;
 
 import guru.qa.niffler.api.CategoryApi;
-import guru.qa.niffler.api.SpendApi;
 import guru.qa.niffler.model.CategoryJson;
+import java.util.List;
 import java.util.Optional;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -36,15 +36,28 @@ public class CategoryExtension implements BeforeEachCallback {
       CategoryJson categoryJson = new CategoryJson(null, generateCategory.category(),
           generateCategory.username());
 
-      Response<CategoryJson> categoryJsonResponse = categoryApi.addCategory(categoryJson).execute();
+     List<String> userCategories =
+          categoryApi.getCategories(generateCategory.username()).execute().body()
+              .stream()
+              .map(CategoryJson::category)
+              .toList();
+
       CategoryJson createdCategory = null;
 
-      if (categoryJsonResponse.isSuccessful()) {
-        createdCategory = categoryJsonResponse.body();
-      }
+     if(!userCategories.contains(categoryJson.category())) {
+
+       Response<CategoryJson> categoryJsonResponse = categoryApi.addCategory(categoryJson).execute();
+
+       if (categoryJsonResponse.isSuccessful()) {
+         createdCategory = categoryJsonResponse.body();
+       }
+       extensionContext.getStore(NAMESPACE)
+           .put(extensionContext.getUniqueId(), createdCategory);
+     }
 
       extensionContext.getStore(NAMESPACE)
-          .put("category", createdCategory);
+          .put(extensionContext.getUniqueId(), categoryJson);
+
     }
 
   }

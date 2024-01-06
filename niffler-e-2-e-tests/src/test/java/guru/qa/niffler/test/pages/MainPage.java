@@ -1,5 +1,6 @@
 package guru.qa.niffler.test.pages;
 
+import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -18,6 +19,11 @@ public class MainPage {
     deleteSpendingBtn.click();
   }
 
+  public MainPage historyOfSpendingContentIsEmpty() {
+    historyOfSpendings.$$("tr").shouldHave(size(0));
+    return this;
+  }
+
   private SelenideElement getFirstRowHistoryOfSpendingsByDescription(String description) {
     return historyOfSpendings.$$("tr")
         .find(text(description))
@@ -25,8 +31,7 @@ public class MainPage {
         .first();
   }
 
-  public ElementsCollection getHistoryOfSpendingContent () {
+  private ElementsCollection getHistoryOfSpendingContent () {
     return historyOfSpendings.$$("tr");
   }
-
 }
