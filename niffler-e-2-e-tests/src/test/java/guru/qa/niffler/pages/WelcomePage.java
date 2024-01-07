@@ -9,8 +9,7 @@ public class WelcomePage {
     private SelenideElement buttonLogin = $x("//*[@href='/redirect']");
 
     @Step("Нажать на кнопку Login")
-    public LoginPage clickLoginButton()
-    {
+    public LoginPage clickLoginButton() {
         buttonLogin.click();
         return new LoginPage();
     }
