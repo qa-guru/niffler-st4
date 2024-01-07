@@ -7,6 +7,11 @@ import guru.qa.niffler.jupiter.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import guru.qa.niffler.pages.WelcomePage;
+import guru.qa.niffler.jupiter.DisabledByIssue;
+import guru.qa.niffler.jupiter.GenerateSpend;
+import guru.qa.niffler.model.CurrencyValues;
+import guru.qa.niffler.model.SpendJson;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +20,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
-public class SpendingTest {
+public class SpendingTest extends BaseWebTest {
 
   private final String userName = "duck";
 
@@ -29,6 +34,7 @@ public class SpendingTest {
           amount = 96500.00,
           currency = CurrencyValues.RUB
   )
+  @DisabledByIssue("74")
   @Test
   void spendingShouldBeDeletedByButtonDeleteSpending(SpendJson spend) {
     Selenide.open("http://127.0.0.1:3000/main", WelcomePage.class)
