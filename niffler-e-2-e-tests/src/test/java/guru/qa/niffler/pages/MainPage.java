@@ -20,8 +20,8 @@ public class MainPage {
     @Step("В таблице выделить строку с текстом {expectText}")
     public MainPage selectRowInTableByText(String expectText) {
         table.$$("tr").find(text(expectText))
-                .$$("td")
-                .first().scrollTo().shouldBe(visible)
+                .$("td")
+                .scrollTo()
                 .click();
         return this;
     }
