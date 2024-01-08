@@ -10,13 +10,14 @@ public class WelcomePage {
 
   private SelenideElement registerBtn = $("a:nth-child(2)");
 
-  public LoginPage clickLoginBtn() {
+  public WelcomePage clickLoginBtn() {
     loginBtn.click();
-    return new LoginPage();
+    return this;
   }
 
-  public void clickRegisterBtn() {
+  public WelcomePage clickRegisterBtn() {
     registerBtn.click();
+    return this;
     //todo return RegisterPage
   }
 
