@@ -14,23 +14,23 @@ import java.io.ByteArrayInputStream;
 
 public class BrowserExtension implements AfterEachCallback, TestExecutionExceptionHandler {
 
-  @Override
-  public void handleTestExecutionException(ExtensionContext extensionContext, Throwable throwable) throws Throwable {
-    if (WebDriverRunner.hasWebDriverStarted()) {
-      Allure.addAttachment(
-          "Screen after test",
-          new ByteArrayInputStream(
-              ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES)
-          )
-      );
+    @Override
+    public void handleTestExecutionException(ExtensionContext extensionContext, Throwable throwable) throws Throwable {
+        if (WebDriverRunner.hasWebDriverStarted()) {
+            Allure.addAttachment(
+                    "Screen after test",
+                    new ByteArrayInputStream(
+                            ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES)
+                    )
+            );
+        }
+        throw throwable;
     }
-    throw throwable;
-  }
 
-  @Override
-  public void afterEach(ExtensionContext extensionContext) throws Exception {
-    if (WebDriverRunner.hasWebDriverStarted()) {
-      Selenide.closeWebDriver();
+    @Override
+    public void afterEach(ExtensionContext extensionContext) throws Exception {
+        if (WebDriverRunner.hasWebDriverStarted()) {
+            Selenide.closeWebDriver();
+        }
     }
-  }
 }

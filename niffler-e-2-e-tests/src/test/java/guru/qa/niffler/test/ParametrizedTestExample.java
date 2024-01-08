@@ -11,22 +11,22 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class ParametrizedTestExample {
 
 
-  @CsvSource({
-      "1001, Dima",
-      "1002, Stas",
-      "1003, Artem"
-  })
-  @ParameterizedTest
-  void paramTest(@AllureIdParam String allureId, String name) {
+    @CsvSource({
+            "1001, Dima",
+            "1002, Stas",
+            "1003, Artem"
+    })
+    @ParameterizedTest
+    void paramTest(@AllureIdParam String allureId, String name) {
 
-  }
+    }
 
 
-  @ValueSource(strings = {
-      "rest/spend0.json", "rest/spend1.json"
-  })
-  @ParameterizedTest
-  void spendRestTest(@ConvertWith(SpendJsonConverter.class) SpendJson spend) {
-    System.out.println();
-  }
+    @ValueSource(strings = {
+            "rest/spend0.json", "rest/spend1.json"
+    })
+    @ParameterizedTest
+    void spendRestTest(@ConvertWith(SpendJsonConverter.class) SpendJson spend) {
+        System.out.println();
+    }
 }

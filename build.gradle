@@ -10,7 +10,7 @@ subprojects {
         mavenCentral()
     }
     ext {
-        dockerHubName = "qaguru"
+        dockerHubName = "dmitriimalakhov"
 
         lombokVersion = '1.18.30'
         springKafkaVersion = '3.0.11'
