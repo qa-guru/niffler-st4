@@ -6,11 +6,11 @@ import com.codeborne.selenide.SelenideElement;
 
 public class LoginPage {
 
-  private SelenideElement userNameField =$("input[name='username']");
+  private final SelenideElement userNameField =$("input[name='username']");
 
-  private SelenideElement passwordField= $("input[name='password']");
+  private final SelenideElement passwordField= $("input[name='password']");
 
-  private SelenideElement signInBtn = $("button[type='submit']");
+  private final SelenideElement signInBtn = $("button[type='submit']");
 
   public LoginPage loginByUserAndPassword(String user, String password) {
     userNameField.setValue(user);
