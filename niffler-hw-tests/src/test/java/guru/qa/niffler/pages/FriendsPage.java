@@ -11,7 +11,7 @@ public class FriendsPage {
     private SelenideElement friends = $(".people-content tbody");
 
     public void requestReceivedShouldBeDisplayed() {
-        friends.$(byCssSelector("[data-tooltip-id=submit-invitation]")).shouldBe(visible);
+        friends.$("[data-tooltip-id=submit-invitation]").shouldBe(visible);
     }
 
     public void friendShouldBeDisplayed() {
