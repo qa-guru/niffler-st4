@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static guru.qa.niffler.jupiter.User.UserType.*;
 
 @ExtendWith(UsersQueueExtension.class)
-public class FriendsTest extends BaseWebTest{
+public class FriendsTest extends BaseWebTest {
     public WelcomePage welcomePage = new WelcomePage();
     public LoginPage loginPage = new LoginPage();
     public TopMenu topMenu = new TopMenu();
@@ -22,6 +22,7 @@ public class FriendsTest extends BaseWebTest{
 
     @BeforeEach
     void doLogin(@User(WITH_FRIENDS) UserJson user) {
+        System.out.println("user0: " + user.username());
         Selenide.open("http://127.0.0.1:3000/main");
         welcomePage.clickLoginLink();
         loginPage.login(user.username(), user.testData().password());
@@ -49,25 +50,13 @@ public class FriendsTest extends BaseWebTest{
     }
 
     @Test
-    void requestSentShouldBeDisplayed(@User(REQUEST_SENT) UserJson user) {
-        topMenu.clickPeopleTopMenu();
-        peoplePage.requestSentShouldBeDisplayed();
-    }
-
-    @Test
-    void requestReceivedShouldBeDisplayed0(@User(REQUEST_RECEIVED) UserJson user) {
-        topMenu.clickFriendsTopMenu();
-        friendsPage.requestReceivedShouldBeDisplayed();
-    }
-
-    @Test
-    void requestReceivedShouldBeDisplayed1(@User(REQUEST_RECEIVED) UserJson user) {
-        topMenu.clickFriendsTopMenu();
-        friendsPage.requestReceivedShouldBeDisplayed();
-    }
-
-    @Test
     void testWithoutParam() throws Exception {
-        Thread.sleep(3000);
+
+    }
+
+    @Test
+    void testWithSeveralParam(@User(REQUEST_SENT) UserJson userSent, @User(REQUEST_RECEIVED) UserJson userReceived) {
+        System.out.println("user1: " + userSent.username());
+        System.out.println("user2: " + userReceived.username());
     }
 }

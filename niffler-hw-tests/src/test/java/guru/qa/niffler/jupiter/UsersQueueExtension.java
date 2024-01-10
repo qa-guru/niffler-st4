@@ -6,10 +6,10 @@ import guru.qa.niffler.model.UserJson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.*;
 
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -41,49 +41,56 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        // Test method
-        Parameter[] parameters = context.getRequiredTestMethod().getParameters();
-        boolean hasTestMethodParam = putUserFromParameterToContext(context, parameters);
+        List<Method> methods = new ArrayList<>();
+        methods.add(context.getRequiredTestMethod());
+        Arrays.stream(context.getRequiredTestClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(BeforeEach.class))
+                .forEach(methods::add);
 
-        if (hasTestMethodParam){
-            return;
-        }
+        List<Parameter> allParameters = methods.stream()
+                .map(Executable::getParameters)
+                .flatMap(Arrays::stream)
+                .filter(parameter -> parameter.isAnnotationPresent(User.class))
+                .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
+                .toList();
 
-        // BeforeEach method
-        Method[] methods = context.getRequiredTestClass().getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.isAnnotationPresent(BeforeEach.class)){
-                Parameter[] beforeEachParams = method.getParameters();
-                putUserFromParameterToContext(context, beforeEachParams);
-            }
-        }
+        putUserFromParameterToContext(context, allParameters);
     }
 
-    private boolean putUserFromParameterToContext(ExtensionContext context, Parameter[] parameters) {
+    private boolean putUserFromParameterToContext(ExtensionContext context, List<Parameter> parameters) {
+        HashMap<User.UserType, UserJson> usersInParams = new HashMap<>();
+
         for (Parameter parameter : parameters) {
-            User annotation = parameter.getAnnotation(User.class);
-            if (annotation != null && parameter.getType().isAssignableFrom(UserJson.class)) {
-                UserJson testCandidate = null;
-                Queue<UserJson> queue = users.get(annotation.value());
-                while (testCandidate == null) {
-                    testCandidate = queue.poll();
-                }
-                context.getStore(NAMESPACE).put(context.getUniqueId(), testCandidate);
-                return true;
+            User.UserType userType = parameter.getAnnotation(User.class).value();
+
+            if (usersInParams.containsKey(userType)) {
+                continue;
             }
+
+            UserJson testCandidate = null;
+            Queue<UserJson> queue = users.get(userType);
+            while (testCandidate == null) {
+                testCandidate = queue.poll();
+            }
+            usersInParams.put(userType, testCandidate);
         }
-        return false;
+
+        context.getStore(NAMESPACE).put(context.getUniqueId(), usersInParams);
+        return usersInParams.size() > 0;
     }
 
     @Override
-    public void afterTestExecution(ExtensionContext context) throws Exception {
-        UserJson userFromTest = context.getStore(NAMESPACE)
-                .get(context.getUniqueId(), UserJson.class);
-        users.get(userFromTest.testData().userType()).add(userFromTest);
+    public void afterTestExecution(ExtensionContext context) {
+        HashMap<User.UserType, UserJson> usersInParams = new HashMap<>(context.getStore(NAMESPACE)
+                .get(context.getUniqueId(), Map.class));
+        for (UserJson user : usersInParams.values()) {
+            users.get(user.testData().userType()).add(user);
+        }
     }
 
     @Override
-    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws
+            ParameterResolutionException {
         return parameterContext.getParameter()
                 .getType()
                 .isAssignableFrom(UserJson.class) &&
@@ -91,9 +98,11 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
     }
 
     @Override
-    public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return extensionContext.getStore(NAMESPACE)
-                .get(extensionContext.getUniqueId(), UserJson.class);
+    public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext context) throws
+            ParameterResolutionException {
+        return (UserJson) context.getStore(NAMESPACE)
+                .get(context.getUniqueId(), Map.class)
+                .get(parameterContext.findAnnotation(User.class).get().value());
     }
 
     private static UserJson user(String username, String password, User.UserType userType) {
