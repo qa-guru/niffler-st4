@@ -14,24 +14,30 @@ import static guru.qa.niffler.jupiter.User.UserType.INVITATION_RECEIVED;
 import static guru.qa.niffler.jupiter.User.UserType.INVITATION_SENT;
 
 @ExtendWith(UsersQueueExtension.class)
-public class InvitationReceivedFriendsTest {
+public class InvitationReceivedFriendsTest extends BaseWebTest {
 
     @BeforeEach()
     void openFriendsPage(@User(INVITATION_RECEIVED) UserJson user) {
-        new WelcomePage().open().clickLoginButton()
+        welcomePage
+                .open()
+                .clickLoginButton()
                 .authorize(user.username(), user.testData().password());
     }
 
     @Test
     @DisplayName("Проверка записей в таблице друзей")
     void checkTableFriendIsEmpty() {
-        new MainPage().clickFriendsButton().checkTableFriendIsEmpty();
+        mainPage
+                .clickFriendsButton()
+                .checkTableFriendIsEmpty();
     }
 
     @Test
     @DisplayName("Проверка отображения в таблице текста Pending invitation")
     void textPendingInvitation() {
-        new MainPage().clickAllPeopleButton().checkTextPendingInvitationVisible();
+        mainPage
+                .clickAllPeopleButton()
+                .checkTextPendingInvitationVisible();
     }
 
 }

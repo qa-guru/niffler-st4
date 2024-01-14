@@ -13,11 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static guru.qa.niffler.jupiter.User.UserType.WITH_FRIENDS;
 
 @ExtendWith(UsersQueueExtension.class)
-public class WithFriendsTest {
+public class WithFriendsTest extends BaseWebTest {
 
     @BeforeEach()
     void openFriendsPage(@User(WITH_FRIENDS) UserJson user) {
-        new WelcomePage().open().clickLoginButton()
+        welcomePage
+                .open()
+                .clickLoginButton()
                 .authorize(user.username(), user.testData().password())
                 .clickFriendsButton();
     }
@@ -25,18 +27,21 @@ public class WithFriendsTest {
     @Test
     @DisplayName("Проверка отображения текста You are friends в таблице друзей")
     void textYouAareFriends() {
-        new FriendsPage().checkFriendsTextVisible();
+        friendsPage
+                .checkFriendsTextVisible();
     }
 
     @Test
     @DisplayName("Проверка отображения кнопки Remove friend в таблице друзей")
     void removeFriendButtonVisible() {
-        new FriendsPage().checkRemoveFriendButtonVisible();
+        friendsPage
+                .checkRemoveFriendButtonVisible();
     }
 
     @Test
     @DisplayName("Проверка отображения аватар друга в таблице друзей")
     void avatarVisible() {
-        new FriendsPage().checkAvatarVisible();
+        friendsPage
+                .checkAvatarVisible();
     }
 }

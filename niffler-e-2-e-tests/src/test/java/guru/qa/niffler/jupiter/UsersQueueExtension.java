@@ -3,6 +3,7 @@ package guru.qa.niffler.jupiter;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.TestData;
 import guru.qa.niffler.model.UserJson;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
 import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,7 +45,12 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        Map<User.UserType, UserJson> testCandidates = new HashMap<>();
+        List<Method> allMethods = new ArrayList<>();
+        allMethods.add(context.getRequiredTestMethod());
+        Arrays.stream(context.getRequiredTestClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(BeforeEach.class))
+                .forEach(allMethods::add);
+
         List<Parameter> parameters = new ArrayList<>();
         parameters.addAll(Stream.of(context.getRequiredTestClass().getDeclaredMethods())
                 .map(Executable::getParameters)
@@ -51,6 +58,8 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
                 .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
                 .filter(parameter -> parameter.isAnnotationPresent(User.class))
                 .toList());
+
+        Map<User.UserType, UserJson> testCandidates = new HashMap<>();
 
         for (Parameter parameter : parameters) {
             User.UserType userType = parameter.getAnnotation(User.class).value();

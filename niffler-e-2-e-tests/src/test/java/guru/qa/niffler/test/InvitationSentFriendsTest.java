@@ -13,30 +13,34 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static guru.qa.niffler.jupiter.User.UserType.INVITATION_SENT;
 
 @ExtendWith(UsersQueueExtension.class)
-public class InvitationSentFriendsTest {
+public class InvitationSentFriendsTest extends BaseWebTest {
 
     @BeforeEach()
     void openFriendsPage(@User(INVITATION_SENT) UserJson user) {
-        new WelcomePage().open().clickLoginButton()
+        welcomePage
+                .open()
+                .clickLoginButton()
                 .authorize(user.username(), user.testData().password()).clickFriendsButton();
     }
 
     @Test
     @DisplayName("Проверка записей в таблице друзей")
     void checkTableFriendIsEmpty() {
-        new FriendsPage().checkTableFriendIsEmpty();
+        friendsPage
+                .checkTableFriendIsEmpty();
     }
 
     @Test
     @DisplayName("Проверка отображения кнопки Submit invitation")
     void submitInvitationVisible() {
-        new FriendsPage().checkSubmitInvitationVisible();
+        friendsPage
+                .checkSubmitInvitationVisible();
     }
 
     @Test
     @DisplayName("Проверка отображения кнопки Decline invitation")
     void declineInvitationVisible() {
-        new FriendsPage().checkDeclineInvitationVisible();
+        friendsPage
+                .checkDeclineInvitationVisible();
     }
-
 }
