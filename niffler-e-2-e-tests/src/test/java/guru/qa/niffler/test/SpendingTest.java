@@ -1,22 +1,14 @@
 package guru.qa.niffler.test;
 
-import com.codeborne.selenide.Configuration;
 import guru.qa.niffler.jupiter.GenerateCategory;
 import guru.qa.niffler.jupiter.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
-import guru.qa.niffler.page.WelcomePage;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.Test;
 
 @Feature("Spendings")
 public class SpendingTest extends BaseWebTest {
-    static {
-        Configuration.browserSize = "1980x1024";
-    }
-
-    private final WelcomePage welcomePage = new WelcomePage();
-
     @GenerateCategory(
             category = "Обучение",
             username = "duck"
