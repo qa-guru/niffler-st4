@@ -51,13 +51,11 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
                 .filter(method -> method.isAnnotationPresent(BeforeEach.class))
                 .forEach(allMethods::add);
 
-        List<Parameter> parameters = new ArrayList<>();
-        parameters.addAll(Stream.of(context.getRequiredTestClass().getDeclaredMethods())
-                .map(Executable::getParameters)
+        List<Parameter> parameters = allMethods.stream().map(m -> m.getParameters())
                 .flatMap(Arrays::stream)
-                .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
                 .filter(parameter -> parameter.isAnnotationPresent(User.class))
-                .toList());
+                .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
+                .toList();
 
         Map<User.UserType, UserJson> testCandidates = new HashMap<>();
 
