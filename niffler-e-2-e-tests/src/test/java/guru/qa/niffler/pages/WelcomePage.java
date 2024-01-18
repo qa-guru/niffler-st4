@@ -1,5 +1,6 @@
 package guru.qa.niffler.pages;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -12,6 +13,12 @@ public class WelcomePage {
     public LoginPage clickLoginButton() {
         buttonLogin.click();
         return new LoginPage();
+    }
+
+    @Step("Открыть старовую старницу")
+    public WelcomePage open() {
+        Selenide.open("http://127.0.0.1:3000/main");
+        return this;
     }
 
 }

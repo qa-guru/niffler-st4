@@ -16,6 +16,8 @@ import static com.codeborne.selenide.Selenide.$x;
 public class MainPage {
     private SelenideElement table = $x("//table");
     private SelenideElement deleteButton = $(byText("Delete selected"));
+    private SelenideElement friendsButton = $x("//a[@href='/friends']");
+    private SelenideElement peopleButton = $x("//a[@href='/people']");
 
     @Step("В таблице выделить строку с текстом {expectText}")
     public MainPage selectRowInTableByText(String expectText) {
@@ -36,5 +38,17 @@ public class MainPage {
     public MainPage checkTableIsEmpty() {
         table.$$("tr").shouldHave(sizeLessThanOrEqual(1));
         return this;
+    }
+
+    @Step("Нажать кнопку Friends")
+    public FriendsPage clickFriendsButton() {
+        friendsButton.click();
+        return new FriendsPage();
+    }
+
+    @Step("Нажать кнопку All people")
+    public AllPeoplePage clickAllPeopleButton() {
+        peopleButton.click();
+        return new AllPeoplePage();
     }
 }
