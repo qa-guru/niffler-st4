@@ -32,7 +32,7 @@ public class SpendingTest extends BaseWebTest {
     @GenerateSpend(
             username = userName,
             description = "Starfield",
-            amount = 92500.00,
+            amount = 91500.00,
             currency = CurrencyValues.RUB
     )
 
