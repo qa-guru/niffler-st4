@@ -14,14 +14,14 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class IssueExtension implements ExecutionCondition {
 
   public static final ExtensionContext.Namespace NAMESPACE
-      = ExtensionContext.Namespace.create(IssueExtension.class);
+          = ExtensionContext.Namespace.create(IssueExtension.class);
 
   private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
   private static final Retrofit retrofit = new Retrofit.Builder()
-      .client(httpClient)
-      .baseUrl("https://api.github.com")
-      .addConverterFactory(JacksonConverterFactory.create())
-      .build();
+          .client(httpClient)
+          .baseUrl("https://api.github.com")
+          .addConverterFactory(JacksonConverterFactory.create())
+          .build();
 
   private final GhApi ghApi = retrofit.create(GhApi.class);
 
@@ -29,24 +29,24 @@ public class IssueExtension implements ExecutionCondition {
   @Override
   public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
     DisabledByIssue disabledByIssue = AnnotationSupport.findAnnotation(
-        context.getRequiredTestMethod(),
-        DisabledByIssue.class
-    ).orElse(
-        AnnotationSupport.findAnnotation(
-            context.getRequiredTestClass(),
+            context.getRequiredTestMethod(),
             DisabledByIssue.class
-        ).orElse(null)
+    ).orElse(
+            AnnotationSupport.findAnnotation(
+                    context.getRequiredTestClass(),
+                    DisabledByIssue.class
+            ).orElse(null)
     );
 
     if (disabledByIssue != null) {
       JsonNode responseBody = ghApi.issue(
-          "Bearer " + System.getenv("GH_TOKEN"),
-          disabledByIssue.value()
+              "Bearer " + System.getenv("GH_TOKEN"),
+              disabledByIssue.value()
       ).execute().body();
 
       return "open".equals(responseBody.get("state").asText())
-          ? ConditionEvaluationResult.disabled("Disabled by issue")
-          : ConditionEvaluationResult.enabled("Issue closed");
+              ? ConditionEvaluationResult.disabled("Disabled by issue")
+              : ConditionEvaluationResult.enabled("Issue closed");
     }
     return ConditionEvaluationResult.enabled("Annotation not found");
   }

@@ -17,6 +17,7 @@ public class SpendExtension implements BeforeEachCallback {
   public static final ExtensionContext.Namespace NAMESPACE
       = ExtensionContext.Namespace.create(SpendExtension.class);
 
+
   private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
   private static final Retrofit retrofit = new Retrofit.Builder()
       .client(httpClient)
@@ -29,25 +30,31 @@ public class SpendExtension implements BeforeEachCallback {
   @Override
   public void beforeEach(ExtensionContext extensionContext) throws Exception {
     Optional<GenerateSpend> spend = AnnotationSupport.findAnnotation(
-        extensionContext.getRequiredTestMethod(),
-        GenerateSpend.class
+            extensionContext.getRequiredTestMethod(),
+            GenerateSpend.class
     );
 
     if (spend.isPresent()) {
       GenerateSpend spendData = spend.get();
+      Optional<GenerateCategory> category = AnnotationSupport.findAnnotation(
+              extensionContext.getRequiredTestMethod(),
+              GenerateCategory.class
+      );
+      GenerateCategory categoryData = category.get();
+
       SpendJson spendJson = new SpendJson(
-          null,
-          new Date(),
-          spendData.category(),
-          spendData.currency(),
-          spendData.amount(),
-          spendData.description(),
-          spendData.username()
+              null,
+              new Date(),
+              categoryData.category(),
+              spendData.currency(),
+              spendData.amount(),
+              spendData.description(),
+              spendData.username()
       );
 
       SpendJson created = spendApi.addSpend(spendJson).execute().body();
       extensionContext.getStore(NAMESPACE)
-          .put("spend", created);
+              .put("spend", created);
     }
   }
 }
