@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 public class ParametrizedTestExample {
 
-
   @CsvSource({
       "1001, Dima",
       "1002, Stas",
@@ -20,7 +19,6 @@ public class ParametrizedTestExample {
   void paramTest(@AllureIdParam String allureId, String name) {
 
   }
-
 
   @ValueSource(strings = {
       "rest/spend0.json", "rest/spend1.json"

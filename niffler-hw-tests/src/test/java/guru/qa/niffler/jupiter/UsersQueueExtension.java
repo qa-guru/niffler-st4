@@ -57,7 +57,7 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
         putUserFromParameterToContext(context, allParameters);
     }
 
-    private boolean putUserFromParameterToContext(ExtensionContext context, List<Parameter> parameters) {
+    private void putUserFromParameterToContext(ExtensionContext context, List<Parameter> parameters) {
         HashMap<User.UserType, UserJson> usersInParams = new HashMap<>();
 
         for (Parameter parameter : parameters) {
@@ -76,7 +76,6 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
         }
 
         context.getStore(NAMESPACE).put(context.getUniqueId(), usersInParams);
-        return usersInParams.size() > 0;
     }
 
     @Override

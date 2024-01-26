@@ -13,12 +13,6 @@ import static guru.qa.niffler.jupiter.User.UserType.REQUEST_SENT;
 
 @ExtendWith(UsersQueueExtension.class)
 public class FriendsSentTest extends BaseWebTest {
-    public WelcomePage welcomePage = new WelcomePage();
-    public LoginPage loginPage = new LoginPage();
-    public TopMenu topMenu = new TopMenu();
-    public MainPage mainPage = new MainPage();
-    public FriendsPage friendsPage = new FriendsPage();
-    public PeoplePage peoplePage = new PeoplePage();
 
     @BeforeEach
     void doLogin(@User(REQUEST_SENT) UserJson user) {
