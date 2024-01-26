@@ -14,9 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class SpendingTest extends BaseWebTest {
-  public WelcomePage welcomePage = new WelcomePage();
-  public LoginPage loginPage = new LoginPage();
-  public MainPage mainPage = new MainPage();
 
   static {
     Configuration.browserSize = "1980x1024";

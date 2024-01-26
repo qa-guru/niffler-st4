@@ -3,87 +3,120 @@ package guru.qa.niffler.jupiter;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.TestData;
 import guru.qa.niffler.model.UserJson;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.*;
 
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static guru.qa.niffler.jupiter.User.UserType.COMMON;
-import static guru.qa.niffler.jupiter.User.UserType.WITH_FRIENDS;
+import static guru.qa.niffler.jupiter.User.UserType.*;
 
 public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
 
-  public static final ExtensionContext.Namespace NAMESPACE
-      = ExtensionContext.Namespace.create(UsersQueueExtension.class);
+    public static final ExtensionContext.Namespace NAMESPACE
+            = ExtensionContext.Namespace.create(UsersQueueExtension.class);
 
-  private static Map<User.UserType, Queue<UserJson>> users = new ConcurrentHashMap<>();
+    private static Map<User.UserType, Queue<UserJson>> users = new ConcurrentHashMap<>();
 
-  static {
-    Queue<UserJson> friendsQueue = new ConcurrentLinkedQueue<>();
-    Queue<UserJson> commonQueue = new ConcurrentLinkedQueue<>();
-    friendsQueue.add(user("dima", "12345", WITH_FRIENDS));
-    friendsQueue.add(user("duck", "12345", WITH_FRIENDS));
-    commonQueue.add(user("bee", "12345", COMMON));
-    commonQueue.add(user("barsik", "12345", COMMON));
-    users.put(WITH_FRIENDS, friendsQueue);
-    users.put(COMMON, commonQueue);
-  }
-
-  @Override
-  public void beforeEach(ExtensionContext context) throws Exception {
-    Parameter[] parameters = context.getRequiredTestMethod().getParameters();
-
-    for (Parameter parameter : parameters) {
-      User annotation = parameter.getAnnotation(User.class);
-      if (annotation != null && parameter.getType().isAssignableFrom(UserJson.class)) {
-        UserJson testCandidate = null;
-        Queue<UserJson> queue = users.get(annotation.value());
-        while (testCandidate == null) {
-          testCandidate = queue.poll();
-        }
-        context.getStore(NAMESPACE).put(context.getUniqueId(), testCandidate);
-        break;
-      }
+    static {
+        Queue<UserJson> friendsQueue = new ConcurrentLinkedQueue<>();
+        Queue<UserJson> commonQueue = new ConcurrentLinkedQueue<>();
+        Queue<UserJson> sentQueue = new ConcurrentLinkedQueue<>();
+        Queue<UserJson> receivedQueue = new ConcurrentLinkedQueue<>();
+        friendsQueue.add(user("dima", "12345", WITH_FRIENDS));
+        friendsQueue.add(user("duck", "12345", WITH_FRIENDS));
+        commonQueue.add(user("bee", "12345", COMMON));
+        commonQueue.add(user("barsik", "12345", COMMON));
+        sentQueue.add(user("cat", "12345", REQUEST_SENT));
+        receivedQueue.add(user("dog", "12345", REQUEST_RECEIVED));
+        users.put(WITH_FRIENDS, friendsQueue);
+        users.put(COMMON, commonQueue);
+        users.put(REQUEST_SENT, sentQueue);
+        users.put(REQUEST_RECEIVED, receivedQueue);
     }
-  }
 
-  @Override
-  public void afterTestExecution(ExtensionContext context) throws Exception {
-    UserJson userFromTest = context.getStore(NAMESPACE)
-        .get(context.getUniqueId(), UserJson.class);
-    users.get(userFromTest.testData().userType()).add(userFromTest);
-  }
+    @Override
+    public void beforeEach(ExtensionContext context) throws Exception {
+        List<Method> methods = new ArrayList<>();
+        methods.add(context.getRequiredTestMethod());
+        Arrays.stream(context.getRequiredTestClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(BeforeEach.class))
+                .forEach(methods::add);
 
-  @Override
-  public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-    return parameterContext.getParameter()
-        .getType()
-        .isAssignableFrom(UserJson.class) &&
-        parameterContext.getParameter().isAnnotationPresent(User.class);
-  }
+        List<Parameter> allParameters = methods.stream()
+                .map(Executable::getParameters)
+                .flatMap(Arrays::stream)
+                .filter(parameter -> parameter.isAnnotationPresent(User.class))
+                .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
+                .toList();
 
-  @Override
-  public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-    return extensionContext.getStore(NAMESPACE)
-        .get(extensionContext.getUniqueId(), UserJson.class);
-  }
+        putUserFromParameterToContext(context, allParameters);
+    }
 
-  private static UserJson user(String username, String password, User.UserType userType) {
-    return new UserJson(
-        null,
-        username,
-        null,
-        null,
-        CurrencyValues.RUB,
-        null,
-        null,
-        new TestData(
-            password,
-            userType
-        )
-    );
-  }
+    private void putUserFromParameterToContext(ExtensionContext context, List<Parameter> parameters) {
+        HashMap<User.UserType, UserJson> usersInParams = new HashMap<>();
+
+        for (Parameter parameter : parameters) {
+            User.UserType userType = parameter.getAnnotation(User.class).value();
+
+            if (usersInParams.containsKey(userType)) {
+                continue;
+            }
+
+            UserJson testCandidate = null;
+            Queue<UserJson> queue = users.get(userType);
+            while (testCandidate == null) {
+                testCandidate = queue.poll();
+            }
+            usersInParams.put(userType, testCandidate);
+        }
+
+        context.getStore(NAMESPACE).put(context.getUniqueId(), usersInParams);
+    }
+
+    @Override
+    public void afterTestExecution(ExtensionContext context) {
+        HashMap<User.UserType, UserJson> usersInParams = new HashMap<>(context.getStore(NAMESPACE)
+                .get(context.getUniqueId(), Map.class));
+        for (UserJson user : usersInParams.values()) {
+            users.get(user.testData().userType()).add(user);
+        }
+    }
+
+    @Override
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws
+            ParameterResolutionException {
+        return parameterContext.getParameter()
+                .getType()
+                .isAssignableFrom(UserJson.class) &&
+                parameterContext.getParameter().isAnnotationPresent(User.class);
+    }
+
+    @Override
+    public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext context) throws
+            ParameterResolutionException {
+        return (UserJson) context.getStore(NAMESPACE)
+                .get(context.getUniqueId(), Map.class)
+                .get(parameterContext.findAnnotation(User.class).get().value());
+    }
+
+    private static UserJson user(String username, String password, User.UserType userType) {
+        return new UserJson(
+                null,
+                username,
+                null,
+                null,
+                CurrencyValues.RUB,
+                null,
+                null,
+                new TestData(
+                        password,
+                        userType
+                )
+        );
+    }
 }

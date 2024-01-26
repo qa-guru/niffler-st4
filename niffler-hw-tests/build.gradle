@@ -15,6 +15,7 @@ buildscript {
         hibernateVersion = '6.3.0.Final'
         kafkaClientsVersion = '3.5.1'
         saajVersion = '3.0.2'
+        assertJVersion = "3.21.0"
         jakartaXmlBind = '4.0.1'
         userdataWsdlUrl = System.getProperty("test.env") == "docker"
                 ? "http://userdata.niffler.dc:8089/ws/userdata.wsdl"
@@ -147,6 +148,8 @@ dependencies {
     // Lombok
     testAnnotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
+    // Assert
+    testImplementation "org.assertj:assertj-core:${assertJVersion}"
 }
 
 tasks.withType(JavaCompile) {
