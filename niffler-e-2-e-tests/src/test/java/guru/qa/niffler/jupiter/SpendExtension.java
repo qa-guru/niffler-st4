@@ -11,6 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 public class SpendExtension implements BeforeEachCallback {
@@ -37,8 +38,9 @@ public class SpendExtension implements BeforeEachCallback {
         if (spend.isPresent()) {
             GenerateSpend spendData = spend.get();
 
-            CategoryJson categoryFromExtension = (CategoryJson) extensionContext
-                    .getStore(CategoryExtension.NAMESPACE).get(extensionContext.getUniqueId());
+            CategoryJson categoryFromExtension = Objects.requireNonNull((CategoryJson) extensionContext
+                            .getStore(CategoryExtension.NAMESPACE).get(extensionContext.getUniqueId()),
+                    "Category не может быть null");
 
             SpendJson spendJson = new SpendJson(
                     null,
