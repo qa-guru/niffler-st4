@@ -13,41 +13,38 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class IssueExtension implements ExecutionCondition {
 
-    public static final ExtensionContext.Namespace NAMESPACE
-            = ExtensionContext.Namespace.create(IssueExtension.class);
+  private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
+  private static final Retrofit retrofit = new Retrofit.Builder()
+      .client(httpClient)
+      .baseUrl("https://api.github.com")
+      .addConverterFactory(JacksonConverterFactory.create())
+      .build();
 
-    private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
-    private static final Retrofit retrofit = new Retrofit.Builder()
-            .client(httpClient)
-            .baseUrl("https://api.github.com")
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build();
+  private final GhApi ghApi = retrofit.create(GhApi.class);
 
-    private final GhApi ghApi = retrofit.create(GhApi.class);
+  @SneakyThrows
+  @Override
+  public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
+    DisabledByIssue disabledByIssue = AnnotationSupport.findAnnotation(
+        context.getRequiredTestMethod(),
+        DisabledByIssue.class
+    ).orElse(
+        AnnotationSupport.findAnnotation(
+            context.getRequiredTestClass(),
+            DisabledByIssue.class
+        ).orElse(null)
+    );
 
-    @SneakyThrows
-    @Override
-    public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
-        DisabledByIssue disabledByIssue = AnnotationSupport.findAnnotation(
-                context.getRequiredTestMethod(),
-                DisabledByIssue.class
-        ).orElse(
-                AnnotationSupport.findAnnotation(
-                        context.getRequiredTestClass(),
-                        DisabledByIssue.class
-                ).orElse(null)
-        );
+    if (disabledByIssue != null) {
+      JsonNode responseBody = ghApi.issue(
+          "Bearer " + System.getenv("GH_TOKEN"),
+          disabledByIssue.value()
+      ).execute().body();
 
-        if (disabledByIssue != null) {
-            JsonNode responseBody = ghApi.issue(
-                    "Bearer " + System.getenv("GH_TOKEN"),
-                    disabledByIssue.value()
-            ).execute().body();
-
-            return "open".equals(responseBody.get("state").asText())
-                    ? ConditionEvaluationResult.disabled("Disabled by issue")
-                    : ConditionEvaluationResult.enabled("Issue closed");
-        }
-        return ConditionEvaluationResult.enabled("Annotation not found");
+      return "open".equals(responseBody.get("state").asText())
+          ? ConditionEvaluationResult.disabled("Disabled by issue #" + disabledByIssue.value())
+          : ConditionEvaluationResult.enabled("Issue closed");
     }
+    return ConditionEvaluationResult.enabled("Annotation not found");
+  }
 }
