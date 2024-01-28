@@ -45,7 +45,7 @@ public class IssueExtension implements ExecutionCondition {
       ).execute().body();
 
       return "open".equals(responseBody.get("state").asText())
-          ? ConditionEvaluationResult.disabled("Disabled by issue")
+          ? ConditionEvaluationResult.disabled("Disabled by issue #" + disabledByIssue.value())
           : ConditionEvaluationResult.enabled("Issue closed");
     }
     return ConditionEvaluationResult.enabled("Annotation not found");
