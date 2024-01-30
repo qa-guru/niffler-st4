@@ -7,12 +7,17 @@ import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-public class DbUserExtension implements BeforeEachCallback, ParameterResolver {
+public class DbUserExtension implements BeforeEachCallback, AfterEachCallback, ParameterResolver {
 
     public static final ExtensionContext.Namespace NAMESPACE
             = ExtensionContext.Namespace.create(DbUserExtension.class);
+
+    static String userAuthKey = "userAuth";
+    static String userdataKey = "userdata";
 
     private UserRepository userRepository = new UserRepositoryJdbc();
 
@@ -49,7 +54,24 @@ public class DbUserExtension implements BeforeEachCallback, ParameterResolver {
         userRepository.createInAuth(userAuth);
         userRepository.createInUserdata(user);
 
-        extensionContext.getStore(NAMESPACE).put("userAuth", userAuth);
+        Map<String, Object> userEntities = new HashMap<>();
+        userEntities.put(userAuthKey, userAuth);
+        userEntities.put(userdataKey, user);
+
+        extensionContext.getStore(NAMESPACE).put(extensionContext.getUniqueId(), userEntities);
+    }
+
+    @Override
+    public void afterEach(ExtensionContext extensionContext) throws Exception {
+
+        Map userEntities = extensionContext.getStore(NAMESPACE)
+                .get(extensionContext.getUniqueId(), Map.class);
+
+        UserAuthEntity userAuth = (UserAuthEntity) userEntities.get(userAuthKey);
+        UserEntity user = (UserEntity) userEntities.get(userdataKey);
+
+        userRepository.deleteInAuthById(userAuth.getId());
+        userRepository.deleteInUserdataById(user.getId());
     }
 
     @Override
@@ -58,8 +80,10 @@ public class DbUserExtension implements BeforeEachCallback, ParameterResolver {
     }
 
     @Override
-    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return extensionContext.getStore(DbUserExtension.NAMESPACE)
-                .get("userAuth", UserAuthEntity.class);
+    public UserAuthEntity resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        Map userEntities = extensionContext.getStore(NAMESPACE)
+                .get(extensionContext.getUniqueId(), Map.class);
+
+        return (UserAuthEntity) userEntities.get(userAuthKey);
     }
 }
