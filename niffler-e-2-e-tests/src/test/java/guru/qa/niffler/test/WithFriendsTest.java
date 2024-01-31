@@ -1,16 +1,14 @@
 package guru.qa.niffler.test;
 
-import guru.qa.niffler.jupiter.User;
+import guru.qa.niffler.jupiter.annotation.User;
 import guru.qa.niffler.jupiter.UsersQueueExtension;
-import guru.qa.niffler.model.UserJson;
-import guru.qa.niffler.pages.FriendsPage;
-import guru.qa.niffler.pages.WelcomePage;
+import guru.qa.niffler.model.UserJson;;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static guru.qa.niffler.jupiter.User.UserType.WITH_FRIENDS;
+import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
 
 @ExtendWith(UsersQueueExtension.class)
 public class WithFriendsTest extends BaseWebTest {

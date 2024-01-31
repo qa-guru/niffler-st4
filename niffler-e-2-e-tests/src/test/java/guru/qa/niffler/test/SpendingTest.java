@@ -2,11 +2,11 @@ package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.GenerateCategory;
-import guru.qa.niffler.jupiter.GenerateSpend;
+import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import guru.qa.niffler.pages.WelcomePage;
-import guru.qa.niffler.jupiter.DisabledByIssue;
+import guru.qa.niffler.jupiter.annotation.DisabledByIssue;
 import org.junit.jupiter.api.Test;
 
 public class SpendingTest extends BaseWebTest {
