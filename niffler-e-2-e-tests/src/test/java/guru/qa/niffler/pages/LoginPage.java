@@ -2,7 +2,6 @@ package guru.qa.niffler.pages;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import lombok.Data;
 
 import static com.codeborne.selenide.Selenide.$x;
 
