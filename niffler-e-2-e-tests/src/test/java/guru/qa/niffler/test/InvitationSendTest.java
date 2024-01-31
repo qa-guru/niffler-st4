@@ -1,14 +1,13 @@
 package guru.qa.niffler.test;
 
-import static guru.qa.niffler.jupiter.User.UserType.INVITATION_RECIEVED;
-import static guru.qa.niffler.jupiter.User.UserType.INVITATION_SEND;
-import static guru.qa.niffler.jupiter.User.UserType.WITH_FRIENDS;
+import static guru.qa.niffler.jupiter.annotation.User.UserType.INVITATION_SEND;
+import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.codeborne.selenide.Selenide;
-import guru.qa.niffler.jupiter.User;
 import guru.qa.niffler.jupiter.UsersQueueExtension;
+import guru.qa.niffler.jupiter.annotation.User;
 import guru.qa.niffler.model.UserJson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

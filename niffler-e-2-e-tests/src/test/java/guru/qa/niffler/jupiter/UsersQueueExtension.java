@@ -1,12 +1,13 @@
 package guru.qa.niffler.jupiter;
 
 
+import static guru.qa.niffler.jupiter.annotation.User.UserType.INVITATION_RECIEVED;
+import static guru.qa.niffler.jupiter.annotation.User.UserType.INVITATION_SEND;
+import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
 import static guru.qa.niffler.model.UserJson.createUser;
 
-import guru.qa.niffler.jupiter.User.UserType;
 import guru.qa.niffler.jupiter.annotation.User;
-import guru.qa.niffler.model.CurrencyValues;
-import guru.qa.niffler.model.TestData;
+import guru.qa.niffler.jupiter.annotation.User.UserType;
 import guru.qa.niffler.model.UserJson;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
