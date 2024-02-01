@@ -4,7 +4,7 @@ import guru.qa.niffler.config.Config;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum JdbcUrl {
+public enum Database {
   AUTH("jdbc:postgresql://%s:%d/niffler-auth"),
   CURRENCY("jdbc:postgresql://%s:%d/niffler-currency"),
   SPEND("jdbc:postgresql://%s:%d/niffler-spend"),

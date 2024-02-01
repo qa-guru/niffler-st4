@@ -31,22 +31,25 @@ public class LoginTest extends BaseWebTest {
   @BeforeEach
   void createUser() {
     userAuth = new UserAuthEntity();
-    userAuth.setUsername("valentin_4");
+    userAuth.setUsername("valentin_6");
     userAuth.setPassword("12345");
     userAuth.setEnabled(true);
     userAuth.setAccountNonExpired(true);
     userAuth.setAccountNonLocked(true);
     userAuth.setCredentialsNonExpired(true);
-    userAuth.setAuthorities(Arrays.stream(Authority.values())
-        .map(e -> {
+
+    AuthorityEntity[] authorities = Arrays.stream(Authority.values()).map(
+        a -> {
           AuthorityEntity ae = new AuthorityEntity();
-          ae.setAuthority(e);
+          ae.setAuthority(a);
           return ae;
-        }).toList()
-    );
+        }
+    ).toArray(AuthorityEntity[]::new);
+
+    userAuth.addAuthorities(authorities);
 
     user = new UserEntity();
-    user.setUsername("valentin_4");
+    user.setUsername("valentin_6");
     user.setCurrency(CurrencyValues.RUB);
     userRepository.createInAuth(userAuth);
     userRepository.createInUserdata(user);
