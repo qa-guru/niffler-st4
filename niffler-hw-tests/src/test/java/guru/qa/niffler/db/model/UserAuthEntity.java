@@ -18,4 +18,9 @@ public class UserAuthEntity {
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
     private List<AuthorityEntity> authorities = new ArrayList<>();
+
+    @Override
+    public String toString(){
+        return username + " / " + password;
+    }
 }
