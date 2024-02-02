@@ -2,8 +2,8 @@ package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import guru.qa.niffler.jupiter.DisabledByIssue;
-import guru.qa.niffler.jupiter.GenerateSpend;
+import guru.qa.niffler.jupiter.annotation.DisabledByIssue;
+import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import io.qameta.allure.Allure;
