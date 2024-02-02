@@ -1,5 +1,6 @@
 package guru.qa.niffler.jupiter;
 
+import com.github.javafaker.Faker;
 import guru.qa.niffler.db.model.*;
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.db.repository.UserRepositoryJdbc;
@@ -16,6 +17,8 @@ public class DbUserExtension implements BeforeEachCallback, AfterEachCallback, P
     public static final ExtensionContext.Namespace NAMESPACE
             = ExtensionContext.Namespace.create(DbUserExtension.class);
 
+    Faker faker = new Faker();
+
     static String userAuthKey = "userAuth";
     static String userdataKey = "userdata";
 
@@ -24,15 +27,14 @@ public class DbUserExtension implements BeforeEachCallback, AfterEachCallback, P
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
 
+        UserAuthEntity userAuth = new UserAuthEntity();
+        UserEntity user = new UserEntity();
+
         Optional<DbUser> dbUser = AnnotationSupport.findAnnotation(
                 extensionContext.getRequiredTestMethod(),
                 DbUser.class
         );
 
-        UserAuthEntity userAuth;
-        UserEntity user;
-
-        userAuth = new UserAuthEntity();
         userAuth.setUsername(dbUser.get().username());
         userAuth.setPassword(dbUser.get().password());
         userAuth.setEnabled(true);
@@ -47,9 +49,15 @@ public class DbUserExtension implements BeforeEachCallback, AfterEachCallback, P
                 }).toList()
         );
 
-        user = new UserEntity();
         user.setUsername(dbUser.get().username());
         user.setCurrency(CurrencyValues.USD);
+
+        if (dbUser.get().username().isEmpty()){
+            String randomUsername = faker.name().username();
+            userAuth.setUsername(randomUsername);
+            userAuth.setPassword("12345");
+            user.setUsername(randomUsername);
+        }
 
         userRepository.createInAuth(userAuth);
         userRepository.createInUserdata(user);
