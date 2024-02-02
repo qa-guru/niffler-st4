@@ -2,8 +2,10 @@ package guru.qa.niffler.db.repository;
 
 import guru.qa.niffler.db.EmfProvider;
 import guru.qa.niffler.db.jpa.JpaService;
+import guru.qa.niffler.db.model.AuthorityEntity;
 import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
+import java.util.List;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -62,5 +64,30 @@ public class UserRepositoryHibernate extends JpaService implements UserRepositor
   public void deleteInUserdataById(UUID id) {
     UserEntity toBeDeleted = findByIdInUserdata(id).get();
     remove(USERDATA, toBeDeleted);
+  }
+
+  @Override
+  public Optional<UserAuthEntity> findUserInAuthById(UUID id) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<UserEntity> findUserInUserdataById(UUID id) {
+    return Optional.empty();
+  }
+
+  @Override
+  public void updateUserInAuth(UserAuthEntity userAuthEntity) {
+
+  }
+
+  @Override
+  public void updateUserInUserdata(UserEntity userEntity) {
+
+  }
+
+  @Override
+  public List<AuthorityEntity> findAuthoritiesByUserId(UUID userId) {
+    return null;
   }
 }

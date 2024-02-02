@@ -2,10 +2,12 @@ package guru.qa.niffler.db.repository;
 
 import guru.qa.niffler.db.DataSourceProvider;
 import guru.qa.niffler.db.Database;
+import guru.qa.niffler.db.model.AuthorityEntity;
 import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.sjdbc.UserAuthEntityResultSetExtractor;
 import guru.qa.niffler.db.sjdbc.UserEntityRowMapper;
+import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -152,5 +154,30 @@ public class UserRepositorySJdbc implements UserRepository {
       udTemplate.update("DELETE FROM \"user\" WHERE id = ?", id);
       return null;
     });
+  }
+
+  @Override
+  public Optional<UserAuthEntity> findUserInAuthById(UUID id) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<UserEntity> findUserInUserdataById(UUID id) {
+    return Optional.empty();
+  }
+
+  @Override
+  public void updateUserInAuth(UserAuthEntity userAuthEntity) {
+
+  }
+
+  @Override
+  public void updateUserInUserdata(UserEntity userEntity) {
+
+  }
+
+  @Override
+  public List<AuthorityEntity> findAuthoritiesByUserId(UUID userId) {
+    return null;
   }
 }

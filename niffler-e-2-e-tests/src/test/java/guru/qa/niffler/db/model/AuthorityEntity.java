@@ -1,7 +1,5 @@
 package guru.qa.niffler.db.model;
 
-import java.util.UUID;
-import lombok.AllArgsConstructor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,20 +10,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthorityEntity {
 @Entity
 @Table(name = "authority")
 public class AuthorityEntity implements Serializable {
@@ -57,5 +54,11 @@ public class AuthorityEntity implements Serializable {
   @Override
   public final int hashCode() {
     return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+  }
+
+  public AuthorityEntity(UUID id, UUID userId, Authority authority) {
+    this.id = id;
+    this.userId = userId;
+    this.authority = authority;
   }
 }

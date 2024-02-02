@@ -7,10 +7,6 @@ import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.jupiter.DbUser;
 import guru.qa.niffler.jupiter.UserRepositoryExtension;
-
-import guru.qa.niffler.jupiter.annotation.DbUser;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

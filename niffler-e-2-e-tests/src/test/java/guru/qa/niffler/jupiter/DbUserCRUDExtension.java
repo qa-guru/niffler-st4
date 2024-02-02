@@ -32,7 +32,6 @@ public class DbUserCRUDExtension implements ParameterResolver, BeforeEachCallbac
 
   private final UserRepository userRepository = new UserRepositoryJdbc();
 
-  private final String fakeUser = UUID.randomUUID().toString();
   private final String fakeUserPassword = "12345";
 
   static String userAuthKey = "userAuthDB";
@@ -51,23 +50,23 @@ public class DbUserCRUDExtension implements ParameterResolver, BeforeEachCallbac
         .filter(method -> method.isAnnotationPresent(DbUser.class))
         .findFirst();
 
-    DbUser dbUser;
+    if(methodAnnotatedByUser.isEmpty()) {
+      return;
+    }
+
     UserAuthEntity userAuthEntity = new UserAuthEntity();
     UserEntity userEntity = new UserEntity();
 
-    if (methodAnnotatedByUser.isPresent()) {
-      Optional<DbUser> user = AnnotationSupport.findAnnotation(
-          methodAnnotatedByUser.get(),
-          DbUser.class);
-      dbUser = user.get();
-      userAuthEntity.setUsername(dbUser.username().equals("") ? fakeUser : dbUser.username());
-      userAuthEntity.setPassword(dbUser.password().equals("") ? fakeUserPassword : dbUser.password());
-      userEntity.setUsername(dbUser.username().equals("") ? fakeUser : dbUser.username());
-    } else {
-      userAuthEntity.setUsername(fakeUser);
-      userAuthEntity.setPassword(fakeUserPassword);
-      userEntity.setUsername(fakeUser);
-    }
+    DbUser dbUser = methodAnnotatedByUser.get().getAnnotation(DbUser.class);
+
+    String fakeRandomUser = UUID.randomUUID().toString();
+
+    userEntity.setUsername(dbUser.username().equals("") ? fakeRandomUser : dbUser.username());
+    userEntity.setCurrency(CurrencyValues.RUB);
+    userRepository.createInUserdata(userEntity);
+
+    userAuthEntity.setUsername(dbUser.username().equals("") ? fakeRandomUser : dbUser.username());
+    userAuthEntity.setPassword(dbUser.password().equals("") ? fakeUserPassword : dbUser.password());
     userAuthEntity.setEnabled(true);
     userAuthEntity.setAccountNonExpired(true);
     userAuthEntity.setAccountNonLocked(true);
@@ -79,10 +78,10 @@ public class DbUserCRUDExtension implements ParameterResolver, BeforeEachCallbac
           return ae;
         }).toList()
     );
-    userEntity.setCurrency(CurrencyValues.RUB);
+
 
     userRepository.createInAuth(userAuthEntity);
-    userRepository.createInUserdata(userEntity);
+
     Map<String, Object> userData = new HashMap<>();
     userData.put(userAuthKey, userAuthEntity);
     userData.put(userdataKey, userEntity);
