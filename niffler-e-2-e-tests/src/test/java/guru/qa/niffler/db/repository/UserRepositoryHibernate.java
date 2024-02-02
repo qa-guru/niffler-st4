@@ -67,22 +67,13 @@ public class UserRepositoryHibernate extends JpaService implements UserRepositor
   }
 
   @Override
-  public Optional<UserAuthEntity> findUserInAuthById(UUID id) {
-    return Optional.empty();
+  public UserAuthEntity updateUserInAuth(UserAuthEntity userAuthEntity) {
+    return userAuthEntity;
   }
 
   @Override
-  public Optional<UserEntity> findUserInUserdataById(UUID id) {
-    return Optional.empty();
-  }
-
-  @Override
-  public void updateUserInAuth(UserAuthEntity userAuthEntity) {
-
-  }
-
-  @Override
-  public void updateUserInUserdata(UserEntity userEntity) {
+  public UserEntity updateUserInUserdata(UserEntity userEntity) {
+    return userEntity;
 
   }
 

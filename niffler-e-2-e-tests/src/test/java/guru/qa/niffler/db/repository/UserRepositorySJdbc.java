@@ -7,7 +7,11 @@ import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.sjdbc.UserAuthEntityResultSetExtractor;
 import guru.qa.niffler.db.sjdbc.UserEntityRowMapper;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,11 +21,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Optional;
-import java.util.UUID;
 
 public class UserRepositorySJdbc implements UserRepository {
 
@@ -157,23 +156,13 @@ public class UserRepositorySJdbc implements UserRepository {
   }
 
   @Override
-  public Optional<UserAuthEntity> findUserInAuthById(UUID id) {
-    return Optional.empty();
+  public UserAuthEntity updateUserInAuth(UserAuthEntity userAuthEntity) {
+    return userAuthEntity;
   }
 
   @Override
-  public Optional<UserEntity> findUserInUserdataById(UUID id) {
-    return Optional.empty();
-  }
-
-  @Override
-  public void updateUserInAuth(UserAuthEntity userAuthEntity) {
-
-  }
-
-  @Override
-  public void updateUserInUserdata(UserEntity userEntity) {
-
+  public UserEntity updateUserInUserdata(UserEntity userEntity) {
+    return userEntity;
   }
 
   @Override
