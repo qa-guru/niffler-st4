@@ -7,5 +7,7 @@
         <class>guru.qa.niffler.db.model.AuthorityEntity</class>
         <class>guru.qa.niffler.db.model.UserEntity</class>
         <class>guru.qa.niffler.db.model.FriendsEntity</class>
+        <class>guru.qa.niffler.db.model.SpendEntity</class>
+        <class>guru.qa.niffler.db.model.CategoryEntity</class>
     </persistence-unit>
 </persistence>

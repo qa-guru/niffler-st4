@@ -17,7 +17,7 @@ public class SpendResolverExtension implements ParameterResolver {
 
   @Override
   public SpendJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-    return extensionContext.getStore(SpendExtension.NAMESPACE)
+    return extensionContext.getStore(RestSpendExtension.NAMESPACE)
         .get("spend", SpendJson.class);
   }
 }
