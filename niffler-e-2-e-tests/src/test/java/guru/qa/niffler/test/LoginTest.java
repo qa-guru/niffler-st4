@@ -30,7 +30,6 @@ public class LoginTest extends BaseWebTest {
 
   }
 
-  @DbUser()
   @Test
   @DbUser
   void statisticShouldBeVisibleAfterLoginWithEmptyDbUser(UserAuthEntity userAuth) {
