@@ -7,6 +7,7 @@ import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.db.repository.UserRepositoryJdbc;
+import guru.qa.niffler.db.repository.UserRepositorySJdbc;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +31,7 @@ public class DbUserCRUDExtension implements ParameterResolver, BeforeEachCallbac
   public static final ExtensionContext.Namespace NAMESPACE
       = ExtensionContext.Namespace.create(DbUserCRUDExtension.class);
 
-  private final UserRepository userRepository = new UserRepositoryJdbc();
+  private final UserRepository userRepository = getUserRepository();
 
   private final String fakeUserPassword = "12345";
 
@@ -114,4 +115,14 @@ public class DbUserCRUDExtension implements ParameterResolver, BeforeEachCallbac
     return users.get(userAuthKey);
   }
 
+  private static UserRepository getUserRepository() {
+    String repositoryType = System.getProperty("repository", "sjdbc");
+    if ("jdbc".equals(repositoryType)) {
+      System.out.println("uses UserRepositoryJdbc");
+      return new UserRepositoryJdbc();
+    } else {
+      System.out.println("uses UserRepositorySJdbc");
+      return new UserRepositorySJdbc();
+    }
+  }
 }
