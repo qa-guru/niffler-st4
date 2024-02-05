@@ -2,16 +2,21 @@ package guru.qa.niffler.db.repository;
 
 import guru.qa.niffler.db.DataSourceProvider;
 import guru.qa.niffler.db.Database;
+import guru.qa.niffler.db.model.Authority;
 import guru.qa.niffler.db.model.AuthorityEntity;
 import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
+import guru.qa.niffler.db.sjdbc.AuthorityEntityRowMapper;
 import guru.qa.niffler.db.sjdbc.UserAuthEntityResultSetExtractor;
 import guru.qa.niffler.db.sjdbc.UserEntityRowMapper;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -52,7 +57,8 @@ public class UserRepositorySJdbc implements UserRepository {
       authTemplate.update(con -> {
         PreparedStatement ps = con.prepareStatement(
             "INSERT INTO \"user\" " +
-                "(username, password, enabled, account_non_expired, account_non_locked, credentials_non_expired) " +
+                "(username, password, enabled, account_non_expired, account_non_locked, credentials_non_expired) "
+                +
                 "VALUES (?, ?, ?, ?, ?, ?)",
             PreparedStatement.RETURN_GENERATED_KEYS
         );
@@ -93,7 +99,7 @@ public class UserRepositorySJdbc implements UserRepository {
           authTemplate.query(
               "SELECT * " +
                   "FROM \"user\" u " +
-                  "JOIN \"authority\" a ON u.id = a.user_id " +
+                  "LEFT JOIN \"authority\" a ON u.id = a.user_id " +
                   "where u.id = ?",
               UserAuthEntityResultSetExtractor.instance,
               id
@@ -157,16 +163,107 @@ public class UserRepositorySJdbc implements UserRepository {
 
   @Override
   public UserAuthEntity updateUserInAuth(UserAuthEntity userAuthEntity) {
+    List<AuthorityEntity> authorityEntities = findAuthoritiesByUserId(userAuthEntity.getId());
+
+    Set<Authority> authoritiesFromDb = mapAuthorityEntitiesToAuthority(authorityEntities);
+    Set<Authority> authoritiesCandidate = mapAuthorityEntitiesToAuthority(
+        userAuthEntity.getAuthorities());
+
+    Set<Authority> tempSetAuthorityEntitiesForDelete = new HashSet<>(authoritiesFromDb);
+    tempSetAuthorityEntitiesForDelete.removeAll(authoritiesCandidate);
+
+    Set<Authority> tempSetAuthorityEntitiesForInsert = new HashSet<>(authoritiesCandidate);
+    tempSetAuthorityEntitiesForInsert.removeAll(authoritiesFromDb);
+
+    authTxt.execute(status -> {
+      if(!tempSetAuthorityEntitiesForDelete.isEmpty()) {
+        authTemplate.batchUpdate("""
+              DELETE FROM "authority" WHERE  user_id = ? AND authority = ?""",
+          new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+              ps.setObject(1, userAuthEntity.getId());
+              ps.setString(2, tempSetAuthorityEntitiesForDelete.stream().toList().get(i).name());
+            }
+            @Override
+            public int getBatchSize() {
+              return tempSetAuthorityEntitiesForDelete.size();
+            }
+          });
+      }
+
+      if(!tempSetAuthorityEntitiesForInsert.isEmpty()) {
+        authTemplate.batchUpdate("""
+              INSERT INTO "authority" (user_id, authority) VALUES (?, ?)""",
+          new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+              ps.setObject(1, userAuthEntity.getId());
+              ps.setString(2, tempSetAuthorityEntitiesForInsert.stream().toList().get(i).name());
+            }
+            @Override
+            public int getBatchSize() {
+              return tempSetAuthorityEntitiesForInsert.size();
+            }
+          });
+      }
+
+      authTemplate.update("""
+                UPDATE "user"
+                SET username = ?,
+                    password = ?,
+                    enabled = ?,
+                    account_non_expired = ?,
+                    account_non_locked = ?,
+                    credentials_non_expired = ?
+              WHERE id = ?
+              """, userAuthEntity.getUsername(),
+          pe.encode(userAuthEntity.getPassword()),
+              userAuthEntity.getEnabled(),
+              userAuthEntity.getAccountNonExpired(),
+              userAuthEntity.getAccountNonLocked(),
+              userAuthEntity.getCredentialsNonExpired(),
+              userAuthEntity.getId());
+      return null;
+    });
     return userAuthEntity;
   }
 
   @Override
   public UserEntity updateUserInUserdata(UserEntity userEntity) {
+    udTemplate.update("""
+            UPDATE "user"
+            SET username = ?,
+                currency = ?,
+                firstname = ?,
+                surname = ?,
+                photo = ?
+            WHERE id = ?
+             """, userEntity.getUsername(),
+        userEntity.getCurrency().name(),
+        userEntity.getFirstname(),
+        userEntity.getSurname(),
+        userEntity.getPhoto(),
+        userEntity.getId());
     return userEntity;
   }
 
   @Override
   public List<AuthorityEntity> findAuthoritiesByUserId(UUID userId) {
-    return null;
+    return authTemplate.query("""
+            SELECT id,
+                   user_id,
+                   authority
+            FROM "authority"
+            WHERE  user_id = ?
+            """, AuthorityEntityRowMapper.instance,
+        userId);
+  }
+
+  private Set<Authority> mapAuthorityEntitiesToAuthority(List<AuthorityEntity> authorityEntities) {
+    return authorityEntities
+        .stream()
+        .map(authority -> authority.getAuthority())
+        .collect(Collectors.toSet());
   }
 }

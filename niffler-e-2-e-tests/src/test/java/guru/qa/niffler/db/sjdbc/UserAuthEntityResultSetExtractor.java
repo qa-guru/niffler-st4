@@ -3,6 +3,7 @@ package guru.qa.niffler.db.sjdbc;
 import guru.qa.niffler.db.model.Authority;
 import guru.qa.niffler.db.model.AuthorityEntity;
 import guru.qa.niffler.db.model.UserAuthEntity;
+import java.util.Objects;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -33,7 +34,8 @@ public class UserAuthEntityResultSetExtractor implements ResultSetExtractor<User
 
       AuthorityEntity authority = new AuthorityEntity();
       authority.setId(rs.getObject(8, UUID.class));
-      authority.setAuthority(Authority.valueOf(rs.getString(10)));
+      authority.setAuthority(
+          Objects.isNull(rs.getString(10)) ? null : Authority.valueOf(rs.getString(10)));
       user.getAuthorities().add(authority);
     }
     return user;
