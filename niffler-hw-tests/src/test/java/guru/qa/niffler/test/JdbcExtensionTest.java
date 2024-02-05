@@ -2,7 +2,7 @@ package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.db.model.UserAuthEntity;
-import guru.qa.niffler.jupiter.DbUser;
+import guru.qa.niffler.jupiter.annotation.DbUser;
 import guru.qa.niffler.jupiter.UserRepositoryExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

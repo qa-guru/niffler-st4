@@ -1,9 +1,14 @@
 package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Selenide;
-import guru.qa.niffler.db.model.*;
+import guru.qa.niffler.db.model.Authority;
+import guru.qa.niffler.db.model.AuthorityEntity;
+import guru.qa.niffler.db.model.CurrencyValues;
+import guru.qa.niffler.db.model.UserAuthEntity;
+import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.jupiter.UserRepositoryExtension;
+import guru.qa.niffler.jupiter.annotation.DbUser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,22 +31,25 @@ public class LoginTest extends BaseWebTest {
   @BeforeEach
   void createUser() {
     userAuth = new UserAuthEntity();
-    userAuth.setUsername("valentin_1");
+    userAuth.setUsername("valentin_6");
     userAuth.setPassword("12345");
     userAuth.setEnabled(true);
     userAuth.setAccountNonExpired(true);
     userAuth.setAccountNonLocked(true);
     userAuth.setCredentialsNonExpired(true);
-    userAuth.setAuthorities(Arrays.stream(Authority.values())
-        .map(e -> {
-          AuthorityEntity ae = new AuthorityEntity();
-          ae.setAuthority(e);
-          return ae;
-        }).toList()
-    );
+
+    AuthorityEntity[] authorities = Arrays.stream(Authority.values()).map(
+            a -> {
+              AuthorityEntity ae = new AuthorityEntity();
+              ae.setAuthority(a);
+              return ae;
+            }
+    ).toArray(AuthorityEntity[]::new);
+
+    userAuth.addAuthorities(authorities);
 
     user = new UserEntity();
-    user.setUsername("valentin_1");
+    user.setUsername("valentin_6");
     user.setCurrency(CurrencyValues.RUB);
     userRepository.createInAuth(userAuth);
     userRepository.createInUserdata(user);
@@ -53,6 +61,7 @@ public class LoginTest extends BaseWebTest {
     userRepository.deleteInUserdataById(user.getId());
   }
 
+  @DbUser()
   @Test
   void statisticShouldBeVisibleAfterLogin() {
     Selenide.open("http://127.0.0.1:3000/main");

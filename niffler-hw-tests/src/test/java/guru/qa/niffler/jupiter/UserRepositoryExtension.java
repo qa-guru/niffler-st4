@@ -1,6 +1,7 @@
 package guru.qa.niffler.jupiter;
 
 import guru.qa.niffler.db.repository.UserRepository;
+import guru.qa.niffler.db.repository.UserRepositoryHibernate;
 import guru.qa.niffler.db.repository.UserRepositoryJdbc;
 import guru.qa.niffler.db.repository.UserRepositorySJdbc;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -19,6 +20,7 @@ public class UserRepositoryExtension implements TestInstancePostProcessor {
                 switch (System.getProperty("repository")) {
                     case "jdbc" -> repository = new UserRepositoryJdbc();
                     case "sjdbc" -> repository = new UserRepositorySJdbc();
+                    case "hibernate" -> repository = new UserRepositoryHibernate();
                     default -> throw new RuntimeException("Incorrect repository in parameter.");
                 }
                 field.set(o, repository);
