@@ -1,5 +1,7 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.annotation;
 
+import guru.qa.niffler.jupiter.SpendExtension;
+import guru.qa.niffler.jupiter.SpendResolverExtension;
 import guru.qa.niffler.model.CurrencyValues;
 import org.junit.jupiter.api.extension.ExtendWith;
 

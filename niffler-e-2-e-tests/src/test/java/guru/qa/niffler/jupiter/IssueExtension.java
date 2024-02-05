@@ -2,6 +2,7 @@ package guru.qa.niffler.jupiter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import guru.qa.niffler.api.GhApi;
+import guru.qa.niffler.jupiter.annotation.DisabledByIssue;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
@@ -12,9 +13,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class IssueExtension implements ExecutionCondition {
-
-  public static final ExtensionContext.Namespace NAMESPACE
-      = ExtensionContext.Namespace.create(IssueExtension.class);
 
   private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
   private static final Retrofit retrofit = new Retrofit.Builder()
@@ -45,7 +43,7 @@ public class IssueExtension implements ExecutionCondition {
       ).execute().body();
 
       return "open".equals(responseBody.get("state").asText())
-          ? ConditionEvaluationResult.disabled("Disabled by issue")
+          ? ConditionEvaluationResult.disabled("Disabled by issue #" + disabledByIssue.value())
           : ConditionEvaluationResult.enabled("Issue closed");
     }
     return ConditionEvaluationResult.enabled("Annotation not found");
