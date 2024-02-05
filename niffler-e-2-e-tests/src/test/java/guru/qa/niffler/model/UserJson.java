@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 import java.util.UUID;
 
 public record UserJson(
@@ -27,20 +26,20 @@ public record UserJson(
     TestData testData
 ) {
 
-    public static UserJson createUser(String username,  String password,
-        String friendName) {
-        return new UserJson(
-            null,
-            username,
-            null,
-            null,
-            CurrencyValues.RUB,
-            null,
-            null,
-            new TestData(
-                password,
-                friendName
-            )
-        );
-    }
+  public static UserJson createUser(String username, String password,
+      String friendName) {
+    return new UserJson(
+        null,
+        username,
+        null,
+        null,
+        CurrencyValues.RUB,
+        null,
+        null,
+        new TestData(
+            password,
+            friendName
+        )
+    );
+  }
 }
