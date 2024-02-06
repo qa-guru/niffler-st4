@@ -20,6 +20,8 @@ public class SpendingRepositorySJdbc implements SpendingRepository {
 
     @Override
     public SpendEntity createSpending(SpendEntity spend) {
+        spend.getCategory().setId(UUID.fromString(getCategoryById(spend)));
+
         KeyHolder kh = new GeneratedKeyHolder();
 
         spendTemplate.update(
@@ -45,5 +47,10 @@ public class SpendingRepositorySJdbc implements SpendingRepository {
         spend.setId((UUID) kh.getKeys().get("id"));
 
         return spend;
+    }
+
+    private String getCategoryById(SpendEntity spend){
+        return spendTemplate.queryForObject("SELECT id FROM category WHERE category=? AND username=?"
+                , new Object[]{spend.getCategory().getCategory(), spend.getUsername()}, String.class);
     }
 }
