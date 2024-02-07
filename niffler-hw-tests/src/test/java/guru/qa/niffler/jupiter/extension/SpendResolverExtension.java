@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.extension;
 
 import guru.qa.niffler.model.SpendJson;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -18,6 +18,6 @@ public class SpendResolverExtension implements ParameterResolver {
   @Override
   public SpendJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
     return extensionContext.getStore(SpendExtension.NAMESPACE)
-        .get("spend", SpendJson.class);
+        .get(extensionContext.getUniqueId(), SpendJson.class);
   }
 }

@@ -1,6 +1,6 @@
 package guru.qa.niffler.test;
 
-import guru.qa.niffler.jupiter.BrowserExtension;
+import guru.qa.niffler.jupiter.extension.BrowserExtension;
 import guru.qa.niffler.pages.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
