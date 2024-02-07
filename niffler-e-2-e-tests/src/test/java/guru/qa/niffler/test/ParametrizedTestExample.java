@@ -2,7 +2,7 @@ package guru.qa.niffler.test;
 
 import guru.qa.niffler.jupiter.AllureIdParam;
 import guru.qa.niffler.jupiter.SpendJsonConverter;
-import guru.qa.niffler.model.SpendJson;
+import guru.qa.niffler.model.SpendJsonModel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -26,7 +26,7 @@ public class ParametrizedTestExample {
       "rest/spend0.json", "rest/spend1.json"
   })
   @ParameterizedTest
-  void spendRestTest(@ConvertWith(SpendJsonConverter.class) SpendJson spend) {
+  void spendRestTest(@ConvertWith(SpendJsonConverter.class) SpendJsonModel spend) {
     System.out.println();
   }
 }

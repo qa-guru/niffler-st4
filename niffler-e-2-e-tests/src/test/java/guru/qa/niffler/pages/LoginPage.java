@@ -1,9 +1,10 @@
 package guru.qa.niffler.page;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-
 import static com.codeborne.selenide.Selenide.$;
+import guru.qa.niffler.page.WelcomePage;
 
 public class LoginPage {
 
@@ -26,5 +27,14 @@ public class LoginPage {
     @Step("Нажать кнопку [Sign in]")
     public void clickSignInButton() {
         signInButton.click();
+    }
+
+    @Step("Залогиниться")
+    public void login(String username, String password) {
+        WelcomePage welcomePage = new WelcomePage();
+        welcomePage.clickLoginButton();
+        setUsername(username);
+        setPassword(password);
+        clickSignInButton();
     }
 }

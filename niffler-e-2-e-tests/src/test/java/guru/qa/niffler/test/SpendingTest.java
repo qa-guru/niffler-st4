@@ -3,8 +3,8 @@ import guru.qa.niffler.jupiter.GenerateCategory;
 import guru.qa.niffler.jupiter.GenerateSpend;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import guru.qa.niffler.model.CurrencyValues;
-import guru.qa.niffler.model.SpendJson;
+import guru.qa.niffler.jupiter.CurrencyValues;
+import guru.qa.niffler.model.SpendJsonModel;
 import guru.qa.niffler.page.LoginPage;
 import guru.qa.niffler.page.MainPage;
 import guru.qa.niffler.page.WelcomePage;
@@ -34,7 +34,7 @@ public class SpendingTest {
   )
   @Test
   @DisplayName("Удаление траты")
-  void spendingShouldBeDeletedByButtonDeleteSpending(SpendJson spend) {
+  void spendingShouldBeDeletedByButtonDeleteSpending(SpendJsonModel spend) {
     Selenide.open("http://127.0.0.1:3000");
     welcomePage
             .clickLoginButton();

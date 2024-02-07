@@ -1,7 +1,7 @@
 package guru.qa.niffler.jupiter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.qa.niffler.model.SpendJson;
+import guru.qa.niffler.model.SpendJsonModel;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.ArgumentConverter;
@@ -18,7 +18,7 @@ public class SpendJsonConverter implements ArgumentConverter {
   public Object convert(Object o, ParameterContext parameterContext) throws ArgumentConversionException {
     if (o instanceof String path) {
       try (InputStream is = new ClassPathResource(path).getInputStream()) {
-        return om.readValue(is, SpendJson.class);
+        return om.readValue(is, SpendJsonModel.class);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

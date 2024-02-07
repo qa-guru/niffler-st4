@@ -1,11 +1,12 @@
 package guru.qa.niffler.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import guru.qa.niffler.jupiter.CurrencyValues;
 
 import java.util.Date;
 import java.util.UUID;
 
-public record SpendJson(
+public record SpendJsonModel(
     @JsonProperty("id")
     UUID id,
     @JsonProperty("spendDate")

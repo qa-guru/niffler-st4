@@ -1,6 +1,6 @@
 package guru.qa.niffler.jupiter;
 
-import guru.qa.niffler.model.SpendJson;
+import guru.qa.niffler.model.SpendJsonModel;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
@@ -12,12 +12,12 @@ public class SpendResolverExtension implements ParameterResolver {
   public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
     return parameterContext.getParameter()
         .getType()
-        .isAssignableFrom(SpendJson.class);
+        .isAssignableFrom(SpendJsonModel.class);
   }
 
   @Override
-  public SpendJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+  public SpendJsonModel resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
     return extensionContext.getStore(SpendExtension.NAMESPACE)
-        .get("spend", SpendJson.class);
+        .get("spend", SpendJsonModel.class);
   }
 }
