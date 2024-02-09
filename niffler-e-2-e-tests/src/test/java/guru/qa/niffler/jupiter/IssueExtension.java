@@ -1,16 +1,27 @@
-package guru.qa.niffler.jupiter.extension;
+package guru.qa.niffler.jupiter;
 
-import guru.qa.niffler.api.GhApiClient;
+import com.fasterxml.jackson.databind.JsonNode;
+import guru.qa.niffler.api.GhApi;
 import guru.qa.niffler.jupiter.annotation.DisabledByIssue;
 import lombok.SneakyThrows;
+import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.support.AnnotationSupport;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class IssueExtension implements ExecutionCondition {
 
-  private final GhApiClient ghApiClient = new GhApiClient();
+  private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
+  private static final Retrofit retrofit = new Retrofit.Builder()
+      .client(httpClient)
+      .baseUrl("https://api.github.com")
+      .addConverterFactory(JacksonConverterFactory.create())
+      .build();
+
+  private final GhApi ghApi = retrofit.create(GhApi.class);
 
   @SneakyThrows
   @Override
@@ -26,7 +37,12 @@ public class IssueExtension implements ExecutionCondition {
     );
 
     if (disabledByIssue != null) {
-      return "open".equals(ghApiClient.getIssueState(disabledByIssue.value()))
+      JsonNode responseBody = ghApi.issue(
+          "Bearer " + System.getenv("GH_TOKEN"),
+          disabledByIssue.value()
+      ).execute().body();
+
+      return "open".equals(responseBody.get("state").asText())
           ? ConditionEvaluationResult.disabled("Disabled by issue #" + disabledByIssue.value())
           : ConditionEvaluationResult.enabled("Issue closed");
     }

@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter.extension;
+package guru.qa.niffler.jupiter;
 
 
 import static guru.qa.niffler.jupiter.annotation.User.UserType.INVITATION_RECIEVED;
