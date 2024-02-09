@@ -27,8 +27,21 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
+<<<<<<< HEAD
 public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecutionCallback,
     ParameterResolver {
+=======
+import java.lang.reflect.Parameter;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static guru.qa.niffler.jupiter.annotation.User.UserType.COMMON;
+import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
+
+public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
+>>>>>>> Myfork/master
 
   public static final ExtensionContext.Namespace NAMESPACE
       = ExtensionContext.Namespace.create(UsersQueueExtension.class);
