@@ -1,6 +1,7 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.extension;
 
 import guru.qa.niffler.api.SpendApi;
+import guru.qa.niffler.jupiter.extension.SpendExtension;
 import guru.qa.niffler.model.SpendJson;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

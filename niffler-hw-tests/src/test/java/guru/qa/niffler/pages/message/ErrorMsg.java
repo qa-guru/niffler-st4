@@ -1,4 +1,4 @@
-package guru.qa.niffler.page.message;
+package guru.qa.niffler.pages.message;
 
 import lombok.RequiredArgsConstructor;
 

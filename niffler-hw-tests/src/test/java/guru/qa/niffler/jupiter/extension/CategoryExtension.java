@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.extension;
 
 import guru.qa.niffler.api.CategoryApi;
 import guru.qa.niffler.jupiter.annotation.GenerateCategory;
@@ -44,7 +44,7 @@ public class CategoryExtension implements BeforeEachCallback {
 
             CategoryJson created = categoryApi.addCategory(categoryJson).execute().body();
             extensionContext.getStore(NAMESPACE)
-                    .put("category", created);
+                    .put(extensionContext.getUniqueId(), created);
         }
     }
 }

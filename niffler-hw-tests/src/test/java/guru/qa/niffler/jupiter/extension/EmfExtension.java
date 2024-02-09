@@ -5,10 +5,10 @@ import jakarta.persistence.EntityManagerFactory;
 
 public class EmfExtension implements SuiteExtension {
 
-  @Override
-  public void afterSuite() {
-    EmfProvider.INSTANCE.storedEmf().forEach(
-        EntityManagerFactory::close
-    );
-  }
+    @Override
+    public void afterSuite() {
+        EmfProvider.INSTANCE.storedEmf().forEach(
+                EntityManagerFactory::close
+        );
+    }
 }
