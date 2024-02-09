@@ -26,7 +26,7 @@ public enum EmfProvider {
             settings.put("hibernate.connection.driver_class", "org.postgresql.Driver");
             settings.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
             return new ThreadSafeEntityManagerFactory(
-                    Persistence.createEntityManagerFactory("niffler-st4", settings)
+                    Persistence.createEntityManagerFactory("niffler-st4-hw", settings)
             );
         });
     }
