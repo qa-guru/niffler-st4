@@ -8,18 +8,17 @@ import guru.qa.niffler.model.SpendJson;
 
 public class DatabaseSpendExtension extends SpendExtension {
 
-    private SpendingRepository repository = new SpendingRepositoryHibernate();
-
     @Override
     SpendJson create(SpendJson spendJson) {
-        SpendEntity spendEntity;
-        CategoryEntity categoryEntity;
 
-        categoryEntity = new CategoryEntity();
+        SpendingRepository repository = new SpendingRepositoryHibernate();
+
+        CategoryEntity categoryEntity = new CategoryEntity();
+        SpendEntity spendEntity = new SpendEntity();
+
         categoryEntity.setUsername(spendJson.username());
         categoryEntity.setCategory(spendJson.category());
 
-        spendEntity = new SpendEntity();
         spendEntity.setUsername(spendJson.username());
         spendEntity.setSpendDate(spendJson.spendDate());
         spendEntity.setCurrency(spendJson.currency());
@@ -29,7 +28,6 @@ public class DatabaseSpendExtension extends SpendExtension {
 
         SpendEntity created = repository.createSpending(spendEntity);
 
-        return new SpendJson(created.getId(), created.getSpendDate(), created.getCategory().toString(),
-                created.getCurrency(), created.getAmount(), created.getDescription(), created.getUsername());
+        return created.toJsonModel();
     }
 }
