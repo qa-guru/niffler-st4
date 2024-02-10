@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter.converter;
+package guru.qa.niffler.jupiter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.qa.niffler.model.SpendJson;

@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter.extension;
+package guru.qa.niffler.jupiter;
 
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.db.repository.UserRepositoryHibernate;

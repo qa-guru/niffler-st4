@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter.extension;
+package guru.qa.niffler.jupiter;
 
 import guru.qa.niffler.model.SpendJson;
 import org.junit.jupiter.api.extension.ExtensionContext;
