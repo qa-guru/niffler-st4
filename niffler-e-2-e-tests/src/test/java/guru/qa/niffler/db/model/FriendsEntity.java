@@ -2,11 +2,8 @@ package guru.qa.niffler.db.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -14,27 +11,27 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "authority")
-public class AuthorityEntity implements Serializable {
+@Table(name = "friendship")
+@IdClass(FriendsId.class)
+public class FriendsEntity {
+
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
-  private UUID id;
-
-  @Column(nullable = false)
-  @Enumerated(EnumType.STRING)
-  private Authority authority;
-
   @ManyToOne
-  @JoinColumn(name = "user_id")
-  private UserAuthEntity user;
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private UserEntity user;
+
+  @Id
+  @ManyToOne
+  @JoinColumn(name = "friend_id", referencedColumnName = "id")
+  private UserEntity friend;
+
+  @Column(name = "pending")
+  private boolean pending;
 
   @Override
   public final boolean equals(Object o) {
@@ -43,12 +40,13 @@ public class AuthorityEntity implements Serializable {
     Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
     Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
     if (thisEffectiveClass != oEffectiveClass) return false;
-    AuthorityEntity that = (AuthorityEntity) o;
-    return getId() != null && Objects.equals(getId(), that.getId());
+    FriendsEntity that = (FriendsEntity) o;
+    return user != null && Objects.equals(user, that.user)
+        && friend != null && Objects.equals(friend, that.friend);
   }
 
   @Override
   public final int hashCode() {
-    return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    return Objects.hash(user, friend);
   }
 }

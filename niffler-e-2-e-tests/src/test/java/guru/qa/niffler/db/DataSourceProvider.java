@@ -12,10 +12,10 @@ public enum DataSourceProvider {
 
   private static final Config cfg = Config.getInstance();
 
-  private final Map<JdbcUrl, DataSource> store = new ConcurrentHashMap<>();
+  private final Map<Database, DataSource> store = new ConcurrentHashMap<>();
 
-  public DataSource dataSource(JdbcUrl jdbcUrl) {
-    return store.computeIfAbsent(jdbcUrl, k -> {
+  public DataSource dataSource(Database database) {
+    return store.computeIfAbsent(database, k -> {
       PGSimpleDataSource ds = new PGSimpleDataSource();
       ds.setURL(k.getUrl());
       ds.setUser(cfg.jdbcUser());
