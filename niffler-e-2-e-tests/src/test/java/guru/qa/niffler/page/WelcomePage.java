@@ -2,6 +2,7 @@ package guru.qa.niffler.page;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import guru.qa.niffler.config.Config;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.appear;
@@ -9,12 +10,13 @@ import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class WelcomePage {
-    private static final String MAIN_URL = "http://127.0.0.1:3000/main";
+    private static final String MAIN_URL = Config.getInstance().frontUrl();
     private final SelenideElement
             loginButton = $("[href*='redirect']"),
             registerButton = $("[href*='register']"),
             title = $(withText("Welcome to magic journey with Niffler. The coin keeper")),
             logo = $("img.main__logo");
+
 
     @Step("Ожидание загрузки welcome страницы приложения")
     public WelcomePage waitUntilLoaded() {
@@ -40,4 +42,5 @@ public class WelcomePage {
         registerButton.click();
         return new RegisterPage().waitUntilLoaded();
     }
+
 }
