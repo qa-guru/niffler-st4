@@ -5,7 +5,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.db.model.UserAuthEntity;
-import guru.qa.niffler.jupiter.DbUser;
+import guru.qa.niffler.jupiter.MyDbUser;
 import guru.qa.niffler.jupiter.DbUserCRUDExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,7 @@ public class MyLoginTest extends BaseWebTest {
 
 
   @Test
-  @DbUser(username = "Ivan", password = "12345")
+  @MyDbUser(username = "Ivan", password = "12345")
   void statisticShouldBeVisibleAfterLoginWithDbUser(UserAuthEntity userAuth) {
     Selenide.open("http://127.0.0.1:3000/main");
     $("a[href*='redirect']").click();
@@ -27,7 +27,7 @@ public class MyLoginTest extends BaseWebTest {
   }
 
   @Test
-  @DbUser
+  @MyDbUser
   void statisticShouldBeVisibleAfterLoginWithEmptyDbUser(UserAuthEntity userAuth) {
     Selenide.open("http://127.0.0.1:3000/main");
     $("a[href*='redirect']").click();

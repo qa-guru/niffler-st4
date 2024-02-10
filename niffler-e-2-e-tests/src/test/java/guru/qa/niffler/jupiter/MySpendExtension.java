@@ -16,7 +16,7 @@ import org.junit.platform.commons.support.AnnotationSupport;
 public abstract class MySpendExtension implements BeforeEachCallback {
 
   public static final ExtensionContext.Namespace NAMESPACE
-      = ExtensionContext.Namespace.create(SpendExtension.class);
+      = ExtensionContext.Namespace.create(MySpendExtension.class);
 
   @Override
   public void beforeEach(ExtensionContext extensionContext) {

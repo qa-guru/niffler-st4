@@ -27,21 +27,8 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-<<<<<<< HEAD
 public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecutionCallback,
     ParameterResolver {
-=======
-import java.lang.reflect.Parameter;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import static guru.qa.niffler.jupiter.annotation.User.UserType.COMMON;
-import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
-
-public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
->>>>>>> Myfork/master
 
   public static final ExtensionContext.Namespace NAMESPACE
       = ExtensionContext.Namespace.create(UsersQueueExtension.class);
@@ -50,12 +37,12 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
 
   static {
     Queue<UserJson> friendsQueue = new ConcurrentLinkedQueue<>();
-    friendsQueue.add(createUser("dima", "12345",  "duck"));
-    friendsQueue.add(createUser("duck", "12345",  "dima"));
+    friendsQueue.add(createUser("dima", "12345", "duck"));
+    friendsQueue.add(createUser("duck", "12345", "dima"));
 
     Queue<UserJson> invitationSendedQueue = new ConcurrentLinkedQueue<>();
     invitationSendedQueue.add(
-        createUser("bee", "12345",  "barsik"));
+        createUser("bee", "12345", "barsik"));
 
     Queue<UserJson> invitationReceivedQueue = new ConcurrentLinkedQueue<>();
     invitationReceivedQueue.add(
@@ -86,7 +73,7 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
 
     for (Parameter parameter : parameters) {
       User annotation = parameter.getAnnotation(User.class);
-      if(testUsers.containsKey(annotation.value())) {
+      if (testUsers.containsKey(annotation.value())) {
         continue;
       }
       Queue<UserJson> queue = users.get(annotation.value());
