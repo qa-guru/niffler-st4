@@ -4,7 +4,7 @@ import guru.qa.niffler.db.model.CurrencyValues;
 import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.repository.UserRepository;
-import guru.qa.niffler.jupiter.UserDb;
+import guru.qa.niffler.jupiter.annotation.UserDb;
 import guru.qa.niffler.jupiter.UserRepositoryExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

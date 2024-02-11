@@ -51,7 +51,7 @@ public class PeopleTableElement {
 
     public PeopleTableElement verifyPendingInvitationToUser(String username) {
         peopleTable.$$("tr")
-                .get(2)
+                .get(4)
                 .$$("td")
                 .get(1)
                 .shouldHave(text(username));
@@ -61,7 +61,7 @@ public class PeopleTableElement {
 
     public PeopleTableElement verifyExistingDeclineInvitationBtn() {
         peopleTable.$$("tr")
-                .get(2)
+                .get(4)
                 .$(declineInvitationButton)
                 .shouldBe(visible);
 

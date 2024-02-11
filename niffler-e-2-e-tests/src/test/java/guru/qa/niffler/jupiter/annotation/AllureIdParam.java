@@ -1,5 +1,6 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.annotation;
 
+import guru.qa.niffler.jupiter.AllureIdConverter;
 import org.junit.jupiter.params.converter.ConvertWith;
 
 import java.lang.annotation.ElementType;

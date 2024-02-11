@@ -1,6 +1,6 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.annotation;
 
-import guru.qa.niffler.model.CurrencyValues;
+import guru.qa.niffler.jupiter.UserDbExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.ElementType;
@@ -10,14 +10,12 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@ExtendWith({SpendExtension.class, SpendResolverExtension.class})
-public @interface GenerateSpend {
+@ExtendWith(UserDbExtension.class)
+public @interface UserDb {
 
-    String username();
+    String password() default "";
 
-    String description();
+    String username() default "";
 
-    double amount();
-
-    CurrencyValues currency();
+    boolean deleteAfterTest() default true;
 }

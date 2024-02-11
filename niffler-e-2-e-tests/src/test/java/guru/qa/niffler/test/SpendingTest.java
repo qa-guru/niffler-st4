@@ -1,7 +1,7 @@
 package guru.qa.niffler.test;
 
-import guru.qa.niffler.jupiter.GenerateCategory;
-import guru.qa.niffler.jupiter.GenerateSpend;
+import guru.qa.niffler.jupiter.annotation.GenerateCategory;
+import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import io.qameta.allure.Feature;
