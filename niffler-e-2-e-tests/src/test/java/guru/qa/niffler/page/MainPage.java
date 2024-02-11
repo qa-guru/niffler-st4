@@ -3,6 +3,7 @@ package guru.qa.niffler.page;
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.niffler.page_element.HeaderMainPageElement;
 import guru.qa.niffler.page_element.HistoryOfSpendingsElement;
+import guru.qa.niffler.page_element.StatsElement;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.text;
@@ -12,6 +13,7 @@ public class MainPage {
 
     private final HistoryOfSpendingsElement HistoryOfSpendingsElement = new HistoryOfSpendingsElement();
     private final HeaderMainPageElement headerMainPageElement = new HeaderMainPageElement();
+    private final StatsElement statsElement = new StatsElement();
     private final SelenideElement
             toast = $("[class*='toast']");
 
@@ -50,5 +52,11 @@ public class MainPage {
     public ProfilePage goToProfile() {
         headerMainPageElement.clickProfilePage();
         return new ProfilePage().waitUntilLoaded();
+    }
+
+    @Step("Проверка наличия раздела Статистика")
+    public MainPage statisticsSectionShouldExist() {
+        statsElement.statisticsSectionShouldExist();
+        return this;
     }
 }
