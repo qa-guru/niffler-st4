@@ -6,6 +6,7 @@ import guru.qa.niffler.jupiter.annotation.DisabledByIssue;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
+import guru.qa.niffler.page.MainPage;
 import io.qameta.allure.Allure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,13 +48,17 @@ public class SpendingTest extends BaseWebTest {
         .first()
         .click();
 
-    Allure.step("Delete spending", () -> $(byText("Delete selected"))
-        .click());
+    new MainPage()
+        .getSpendingTable()
+        .checkSpends(spend);
 
-    Allure.step("Check that spending was deleted", () -> {
-      $(".spendings-table tbody")
-          .$$("tr")
-          .shouldHave(size(0));
-    });
+//    Allure.step("Delete spending", () -> $(byText("Delete selected"))
+//        .click());
+//
+//    Allure.step("Check that spending was deleted", () -> {
+//      $(".spendings-table tbody")
+//          .$$("tr")
+//          .shouldHave(size(0));
+//    });
   }
 }

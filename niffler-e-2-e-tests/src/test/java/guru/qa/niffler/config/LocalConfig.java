@@ -1,8 +1,14 @@
 package guru.qa.niffler.config;
 
+import com.codeborne.selenide.Configuration;
+
 public class LocalConfig implements Config {
 
   static final LocalConfig instance = new LocalConfig();
+
+  static {
+    Configuration.browserSize = "1980x1024";
+  }
 
   private LocalConfig() {
   }
