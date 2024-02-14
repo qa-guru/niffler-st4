@@ -31,12 +31,13 @@ public class MainPage extends BasePage {
     @Step("Add spending {category} / {amount} / {description}")
     public void addSpending(String category, String amount, LocalDate date, String description) {
         categoryField.click();
+        categoryField.setValue(category);
         categoryValues.findBy(Condition.text(category)).click();
 
         amountField.setValue(amount);
 
         dateField.clear();
-//        dateField.setValue(spendingDateformatter.format(date));
+        dateField.setValue(spendingDateformatter.format(date));
 
         descriptionField.setValue(description);
 
@@ -53,6 +54,7 @@ public class MainPage extends BasePage {
 
     @Step("Click Delete Selected button")
     public void clickDeleteSelectedButton() {
+        deleteSelectedButton.scrollTo();
         deleteSelectedButton.click();
     }
 
