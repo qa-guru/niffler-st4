@@ -1,5 +1,6 @@
 package guru.qa.niffler.jupiter.extension;
 
+import com.github.javafaker.Faker;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.SpendJson;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -26,7 +27,10 @@ public abstract class SpendExtension implements BeforeEachCallback {
 
     if (spend.isPresent()) {
       GenerateSpend spendData = spend.get();
-      SpendJson spendJson = new SpendJson(
+
+      SpendJson spendJson;
+
+      spendJson = new SpendJson(
               null,
               new Date(),
               spendData.category(),
@@ -35,6 +39,18 @@ public abstract class SpendExtension implements BeforeEachCallback {
               spendData.description(),
               spendData.username()
       );
+
+      if (spendData.description().isEmpty()){
+        spendJson = new SpendJson(
+                null,
+                new Date(),
+                spendData.category(),
+                spendData.currency(),
+                spendData.amount(),
+                new Faker().numerify("spend_######"),
+                spendData.username()
+        );
+      }
 
       SpendJson created = create(spendJson);
 
