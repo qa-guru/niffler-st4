@@ -16,14 +16,13 @@ public class PeoplePage extends BasePage {
     private ElementsCollection actions = $$x("//tbody/tr/td[4]");
 
     @Step("Click Add Friend '{username}'")
-    public boolean clickAddFriend(String username) {
+    public void clickAddFriend(String username) {
         for (int i = 0; i < username.length(); i++) {
             if (users.get(i).text().equals(username)) {
                 actions.get(i).click();
-                return true;
+                return;
             }
         }
-        return false;
     }
 
 

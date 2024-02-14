@@ -37,4 +37,9 @@ public class TopMenu extends BasePage {
         logout.click();
     }
 
+    @Step("Logout is displayed")
+    public boolean logoutIsDisplayed() {
+        return logout.isDisplayed();
+    }
+
 }

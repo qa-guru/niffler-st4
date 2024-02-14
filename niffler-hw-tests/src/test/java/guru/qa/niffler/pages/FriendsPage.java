@@ -15,30 +15,34 @@ public class FriendsPage extends BasePage {
     private ElementsCollection users = $$x("//tbody/tr/td[2]");
     private ElementsCollection actions = $$x("//tbody/tr/td[4]");
 
-    @Step("Submit invitation '{username}' {isSubmit}")
-    public boolean submitInvitation(String username, boolean isSubmit) {
+    @Step("Submit invitation '{username}'")
+    public void submitInvitation(String username) {
         for (int i = 0; i < username.length(); i++) {
             if (users.get(i).text().equals(username)) {
-                if (isSubmit) {
-                    actions.get(i).find("div[data-tooltip-id='submit-invitation'] button").click();
-                } else {
-                    actions.get(i).find("div[data-tooltip-id='decline-invitation'] button").click();
-                }
-                return true;
+                actions.get(i).find("div[data-tooltip-id='submit-invitation'] button").click();
+                return;
             }
         }
-        return false;
+    }
+
+    @Step("Decline invitation '{username}'")
+    public void declineInvitation(String username) {
+        for (int i = 0; i < username.length(); i++) {
+            if (users.get(i).text().equals(username)) {
+                actions.get(i).find("div[data-tooltip-id='decline-invitation'] button").click();
+                return;
+            }
+        }
     }
 
     @Step("Remove friend '{username}'")
-    public boolean removeFriend(String username) {
+    public void removeFriend(String username) {
         for (int i = 0; i < username.length(); i++) {
             if (users.get(i).text().equals(username)) {
                 actions.get(i).find("div[data-tooltip-id='remove-friend'] button").click();
-                return true;
+                return;
             }
         }
-        return false;
     }
 
 
