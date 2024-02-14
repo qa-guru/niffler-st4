@@ -1,6 +1,7 @@
 package guru.qa.niffler.test.hw11;
 
 import com.codeborne.selenide.Selenide;
+import com.github.javafaker.Faker;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
@@ -27,7 +28,8 @@ public class hw11SpendingTest extends BaseWebTest {
     @Test
     void addSpending() {
 
-        mainPage.addSpending("testCategory1", "120", LocalDate.of(2023, 1, 25), "someText");
+        mainPage.addSpending("testCategory1", "120", LocalDate.of(2023, 1, 25),
+                new Faker().numerify("spend_######"));
 
         mainPage.checkMessage(SuccessMsg.SPENDING_ADDED_MSG);
 
