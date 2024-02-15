@@ -3,6 +3,7 @@ package guru.qa.niffler.pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import guru.qa.niffler.pages.component.SpendingTable;
 import io.qameta.allure.Step;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static guru.qa.niffler.condition.PhotoCondition.photoFromClasspath;
 
 public class MainPage extends BasePage {
     private ElementsCollection spendings = $(".spendings-table tbody").$$("tr");
@@ -27,6 +29,9 @@ public class MainPage extends BasePage {
     private SelenideElement addSpendingButton = $("button[type='submit']");
 
     DateTimeFormatter spendingDateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    private final SelenideElement avatar = $(".header__avatar");
+    private final SpendingTable spendingTable = new SpendingTable();
 
     @Step("Add spending {category} / {amount} / {description}")
     public void addSpending(String category, String amount, LocalDate date, String description) {
@@ -62,4 +67,14 @@ public class MainPage extends BasePage {
     public void spendingsTableShouldHaveSize(int expectedSize) {
         spendings.shouldHave(size(expectedSize));
     }
+
+    @Step("check avatar")
+    public void checkAvatar(String imageName) {
+        avatar.shouldHave(photoFromClasspath(imageName));
+    }
+
+    public SpendingTable getSpendingTable() {
+        return spendingTable;
+    }
+
 }

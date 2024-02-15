@@ -14,6 +14,8 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class ProfilePage extends BasePage {
 
+    public static final String PAGE_URL = CFG.frontUrl() + "/profile";
+
     private SelenideElement nameField = $("input[name='firstname']");
     private SelenideElement surnameField = $("input[name='surname']");
     private SelenideElement currencyField = $x("//input[contains(@id, 'react-select')]");
@@ -24,6 +26,9 @@ public class ProfilePage extends BasePage {
     private SelenideElement createCategoryButton = $(byText("Create"));
 
     private ElementsCollection categories = $$(".categories__item");
+
+    private final SelenideElement avatarInput = $("input[type='file']");
+    private final SelenideElement avatar = $(".profile__avatar");
 
     @Step("Set profile info {name} / {surname} / {currency}")
     public void setProfileInfo(String name, String surname, CurrencyValues currency) {
@@ -49,5 +54,11 @@ public class ProfilePage extends BasePage {
         return categories.stream().map(x -> x.text()).collect(Collectors.toList());
     }
 
+    public void addAvatar(String imagePath) {
+        avatar.click();
+        avatarInput.uploadFromClasspath(imagePath);
+        submitButton.scrollTo();
+        submitButton.click();
+    }
 
 }
