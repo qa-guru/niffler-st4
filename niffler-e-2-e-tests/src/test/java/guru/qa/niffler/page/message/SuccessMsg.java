@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum SuccessMsg implements Msg {
-  PROFILE_MSG("Profile successfully updated");
+  FRIEND_DELETED("Friend is deleted"),
+  INVITATION_ACCEPTED("Invitation is accepted"),
+  INVITATION_DECLINED("Invitation is declined"),
+  SPENDING_ADDED("Spending successfully added"),
+  PROFILE_UPDATED("Profile successfully updated");
 
   private final String msg;
 

@@ -44,7 +44,10 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
-#    org.springframework.boot.autoconfigure: DEBUG
+    #    org.springframework.boot.autoconfigure: DEBUG
+
+  file:
+    name: 'currency.log'
 
 ---
 spring:

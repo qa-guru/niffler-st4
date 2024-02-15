@@ -9,17 +9,14 @@ import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.jupiter.annotation.DbUser;
 import guru.qa.niffler.jupiter.extension.UserRepositoryExtension;
-import guru.qa.niffler.page.LoginPage;
 import guru.qa.niffler.page.MainPage;
+import guru.qa.niffler.page.WelcomePage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Arrays;
-
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
 
 @ExtendWith(UserRepositoryExtension.class)
 public class LoginTest extends BaseWebTest {
@@ -66,15 +63,12 @@ public class LoginTest extends BaseWebTest {
   @DbUser()
   @Test
   void statisticShouldBeVisibleAfterLogin() {
-    Selenide.open("http://127.0.0.1:3000/main");
-    $("a[href*='redirect']").click();
-
-    new LoginPage()
-        .setLogin(userAuth.getUsername())
-        .setPassword(userAuth.getPassword())
+    Selenide.open(WelcomePage.URL, WelcomePage.class)
+        .doLogin()
+        .fillLoginPage(userAuth.getUsername(), userAuth.getPassword())
         .submit();
 
     new MainPage()
-        .checkThatStatisticDisplayed();
+        .waitForPageLoaded();
   }
 }
