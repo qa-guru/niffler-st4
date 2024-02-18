@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public class SpendingDatabaseTest extends BaseWebTest {
 
-    private SpendingRepository repository = new SpendingRepositoryHibernate();
+//    private SpendingRepository repository = new SpendingRepositoryHibernate();
 
     @GenerateSpend(
             username = "duck",
