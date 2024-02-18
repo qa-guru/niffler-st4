@@ -1,5 +1,8 @@
 package guru.qa.niffler.db.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import guru.qa.niffler.model.UserJson;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -84,6 +87,16 @@ public class UserEntity {
                 i.remove();
             }
         }
+    }
+
+    public UserJson toJsonModel() {
+        return new UserJson(this.getId(), this.getUsername(),
+                this.getFirstname(), this.getSurname(),
+                guru.qa.niffler.model.CurrencyValues.valueOf(this.getCurrency().toString()), null, null, null);
+    }
+
+    public String toFormattedJson() throws JsonProcessingException {
+        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this.toJsonModel());
     }
 
     @Override

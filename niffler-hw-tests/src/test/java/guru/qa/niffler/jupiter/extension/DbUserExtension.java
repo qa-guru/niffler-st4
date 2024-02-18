@@ -1,6 +1,7 @@
 package guru.qa.niffler.jupiter.extension;
 
 import com.github.javafaker.Faker;
+import guru.qa.niffler.db.logging.JsonAttachment;
 import guru.qa.niffler.db.model.*;
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.db.repository.UserRepositoryJdbc;
@@ -52,6 +53,8 @@ public class DbUserExtension implements BeforeEachCallback, AfterEachCallback, P
 
         user.setUsername(dbUser.get().username());
         user.setCurrency(CurrencyValues.USD);
+        user.setFirstname(faker.name().firstName());
+        user.setSurname(faker.name().lastName());
 
         if (dbUser.get().username().isEmpty()){
             String randomUsername = faker.name().username();
@@ -68,6 +71,8 @@ public class DbUserExtension implements BeforeEachCallback, AfterEachCallback, P
         userEntities.put(userdataKey, user);
 
         extensionContext.getStore(NAMESPACE).put(extensionContext.getUniqueId(), userEntities);
+
+        JsonAttachment.attachJson(user.toFormattedJson());
     }
 
     @Override
