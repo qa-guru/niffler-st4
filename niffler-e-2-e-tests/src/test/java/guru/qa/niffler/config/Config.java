@@ -10,6 +10,8 @@ public interface Config {
 
   String frontUrl();
 
+  String authUrl();
+
   String jdbcHost();
 
   default String jdbcUser() {

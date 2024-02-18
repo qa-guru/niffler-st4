@@ -8,19 +8,15 @@ import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.jupiter.extension.UserRepositoryExtension;
-import guru.qa.niffler.page.LoginPage;
 import guru.qa.niffler.page.MainPage;
-import guru.qa.niffler.page.ProfilePage;
+import guru.qa.niffler.page.WelcomePage;
+import guru.qa.niffler.page.message.SuccessMsg;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Arrays;
-
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
 
 @ExtendWith(UserRepositoryExtension.class)
 public class ProfileTest extends BaseWebTest {
@@ -66,21 +62,21 @@ public class ProfileTest extends BaseWebTest {
 
   @Test
   void avatarShouldBeDisplayedInHeader() {
-    Selenide.open("http://127.0.0.1:3000/main");
-    $("a[href*='redirect']").click();
-
-    new LoginPage()
-        .setLogin(userAuth.getUsername())
-        .setPassword(userAuth.getPassword())
+    Selenide.open(WelcomePage.URL, WelcomePage.class)
+        .doLogin()
+        .fillLoginPage(userAuth.getUsername(), userAuth.getPassword())
         .submit();
 
-    MainPage mainPage = new MainPage();
-    mainPage.checkThatStatisticDisplayed();
-
-    open(ProfilePage.PAGE_URL, ProfilePage.class)
-        .addAvatar("images/duck.jpg");
+    new MainPage()
+        .waitForPageLoaded()
+        .getHeader()
+        .toProfilePage()
+        .setAvatar("images/duck.jpg")
+        .submitProfile()
+        .checkToasterMessage(SuccessMsg.PROFILE_UPDATED);
 
     new MainPage()
+        .getHeader()
         .checkAvatar("images/duck.jpg");
   }
 }

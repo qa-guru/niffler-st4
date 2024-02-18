@@ -7,13 +7,10 @@ import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import guru.qa.niffler.page.MainPage;
-import io.qameta.allure.Allure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class SpendingTest extends BaseWebTest {
@@ -50,7 +47,7 @@ public class SpendingTest extends BaseWebTest {
 
     new MainPage()
         .getSpendingTable()
-        .checkSpends(spend);
+        .checkTableContains(spend);
 
 //    Allure.step("Delete spending", () -> $(byText("Delete selected"))
 //        .click());
