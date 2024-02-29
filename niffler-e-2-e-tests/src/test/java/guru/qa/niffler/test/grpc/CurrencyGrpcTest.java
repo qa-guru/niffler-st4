@@ -71,7 +71,7 @@ public class CurrencyGrpcTest extends BaseGrpcTest {
   @Test
   void calculateRatesTest() throws InterruptedException {
     Queue<CalculateResponse> responses = new ConcurrentLinkedQueue<>();
-    Queue<CalculateRequest> requests = new ConcurrentLinkedQueue(List.of(
+    Queue<CalculateRequest> requests = new ConcurrentLinkedQueue<>(List.of(
         CalculateRequest.newBuilder()
             .setSpendCurrency(CurrencyValues.USD)
             .setDesiredCurrency(CurrencyValues.RUB)
@@ -85,7 +85,6 @@ public class CurrencyGrpcTest extends BaseGrpcTest {
     ));
 
     AtomicReference<Throwable> exceptionHolder = new AtomicReference<>();
-
 
     StreamObserver<CalculateResponse> responseObserver = new StreamObserver<CalculateResponse>() {
       @Override
@@ -103,7 +102,8 @@ public class CurrencyGrpcTest extends BaseGrpcTest {
       }
     };
 
-    StreamObserver<CalculateRequest> reqObserver = stub.withDeadlineAfter(10, TimeUnit.SECONDS).calculateRates(responseObserver);
+    StreamObserver<CalculateRequest> reqObserver = stub.withDeadlineAfter(10, TimeUnit.SECONDS)
+        .calculateRates(responseObserver);
 
     while (!requests.isEmpty()) {
       reqObserver.onNext(requests.poll());
@@ -113,7 +113,7 @@ public class CurrencyGrpcTest extends BaseGrpcTest {
 
     Assertions.assertNull(exceptionHolder.get());
     Assertions.assertEquals(
-        3,
+        2,
         responses.size()
     );
   }
