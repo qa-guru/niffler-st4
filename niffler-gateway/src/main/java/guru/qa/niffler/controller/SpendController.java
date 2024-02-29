@@ -28,59 +28,59 @@ import java.util.List;
 @RestController
 public class SpendController {
 
-    private final RestSpendClient restSpendClient;
-    private final UserDataClient userDataClient;
-    private final StatisticAggregator statisticAggregator;
+  private final RestSpendClient restSpendClient;
+  private final UserDataClient userDataClient;
+  private final StatisticAggregator statisticAggregator;
 
-    @Autowired
-    public SpendController(RestSpendClient restSpendClient, UserDataClient userDataClient, StatisticAggregator statisticAggregator) {
-        this.restSpendClient = restSpendClient;
-        this.userDataClient = userDataClient;
-        this.statisticAggregator = statisticAggregator;
-    }
+  @Autowired
+  public SpendController(RestSpendClient restSpendClient, UserDataClient userDataClient, StatisticAggregator statisticAggregator) {
+    this.restSpendClient = restSpendClient;
+    this.userDataClient = userDataClient;
+    this.statisticAggregator = statisticAggregator;
+  }
 
-    @GetMapping("/spends")
-    public List<SpendJson> getSpends(@AuthenticationPrincipal Jwt principal,
-                                     @RequestParam(required = false) DataFilterValues filterPeriod,
-                                     @RequestParam(required = false) CurrencyValues filterCurrency) {
-        String username = principal.getClaim("sub");
-        return restSpendClient.getSpends(username, filterPeriod, filterCurrency);
-    }
+  @GetMapping("/spends")
+  public List<SpendJson> getSpends(@AuthenticationPrincipal Jwt principal,
+                                   @RequestParam(required = false) DataFilterValues filterPeriod,
+                                   @RequestParam(required = false) CurrencyValues filterCurrency) {
+    String username = principal.getClaim("sub");
+    return restSpendClient.getSpends(username, filterPeriod, filterCurrency);
+  }
 
-    @PostMapping("/addSpend")
-    @ResponseStatus(HttpStatus.CREATED)
-    public SpendJson addSpend(@Valid @RequestBody SpendJson spend,
-                              @AuthenticationPrincipal Jwt principal) {
-        String username = principal.getClaim("sub");
-        CurrencyValues userCurrency = userDataClient.currentUser(username).currency();
-        if (userCurrency != spend.currency()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Spending currency should be same with user currency");
-        }
-        return restSpendClient.addSpend(spend.addUsername(username));
+  @PostMapping("/addSpend")
+  @ResponseStatus(HttpStatus.CREATED)
+  public SpendJson addSpend(@Valid @RequestBody SpendJson spend,
+                            @AuthenticationPrincipal Jwt principal) {
+    String username = principal.getClaim("sub");
+    CurrencyValues userCurrency = userDataClient.currentUser(username).currency();
+    if (userCurrency != spend.currency()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Spending currency should be same with user currency");
     }
+    return restSpendClient.addSpend(spend.addUsername(username));
+  }
 
-    @PatchMapping("/editSpend")
-    public SpendJson editSpend(@Valid @RequestBody SpendJson spend,
-                               @AuthenticationPrincipal Jwt principal) {
-        if (spend.id() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id should be present");
-        }
-        String username = principal.getClaim("sub");
-        return restSpendClient.editSpend(spend.addUsername(username));
+  @PatchMapping("/editSpend")
+  public SpendJson editSpend(@Valid @RequestBody SpendJson spend,
+                             @AuthenticationPrincipal Jwt principal) {
+    if (spend.id() == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id should be present");
     }
+    String username = principal.getClaim("sub");
+    return restSpendClient.editSpend(spend.addUsername(username));
+  }
 
-    @GetMapping("/statistic")
-    public List<StatisticJson> getTotalStatistic(@AuthenticationPrincipal Jwt principal,
-                                                 @RequestParam(required = false) CurrencyValues filterCurrency,
-                                                 @RequestParam(required = false) DataFilterValues filterPeriod) {
-        String username = principal.getClaim("sub");
-        return statisticAggregator.enrichStatisticRequest(username, filterCurrency, filterPeriod);
-    }
+  @GetMapping("/statistic")
+  public List<StatisticJson> getTotalStatistic(@AuthenticationPrincipal Jwt principal,
+                                               @RequestParam(required = false) CurrencyValues filterCurrency,
+                                               @RequestParam(required = false) DataFilterValues filterPeriod) {
+    String username = principal.getClaim("sub");
+    return statisticAggregator.enrichStatisticRequest(username, filterCurrency, filterPeriod);
+  }
 
-    @DeleteMapping("/deleteSpends")
-    public ResponseEntity<Void> deleteSpends(@AuthenticationPrincipal Jwt principal,
-                                             @RequestParam List<String> ids) {
-        String username = principal.getClaim("sub");
-        return new ResponseEntity<>(restSpendClient.deleteSpends(username, ids));
-    }
+  @DeleteMapping("/deleteSpends")
+  public ResponseEntity<Void> deleteSpends(@AuthenticationPrincipal Jwt principal,
+                                           @RequestParam List<String> ids) {
+    String username = principal.getClaim("sub");
+    return new ResponseEntity<>(restSpendClient.deleteSpends(username, ids));
+  }
 }

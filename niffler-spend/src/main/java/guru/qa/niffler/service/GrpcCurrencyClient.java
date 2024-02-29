@@ -18,24 +18,24 @@ import java.math.BigDecimal;
 @Component
 public class GrpcCurrencyClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GrpcCurrencyClient.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GrpcCurrencyClient.class);
 
-    @GrpcClient("grpcCurrencyClient")
-    private NifflerCurrencyServiceGrpc.NifflerCurrencyServiceBlockingStub nifflerCurrencyServiceStub;
+  @GrpcClient("grpcCurrencyClient")
+  private NifflerCurrencyServiceGrpc.NifflerCurrencyServiceBlockingStub nifflerCurrencyServiceStub;
 
-    public @Nonnull
-    BigDecimal calculate(double amount,
-                         @Nonnull CurrencyValues spendCurrency,
-                         @Nonnull CurrencyValues desiredCurrency) {
-        try {
-            return BigDecimal.valueOf(nifflerCurrencyServiceStub.calculateRate(CalculateRequest.newBuilder()
-                    .setAmount(amount)
-                    .setSpendCurrency(guru.qa.grpc.niffler.grpc.CurrencyValues.valueOf(spendCurrency.name()))
-                    .setDesiredCurrency(guru.qa.grpc.niffler.grpc.CurrencyValues.valueOf(desiredCurrency.name()))
-                    .build()).getCalculatedAmount());
-        } catch (StatusRuntimeException e) {
-            LOG.error("### Error while calling gRPC server ", e);
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
-        }
+  public @Nonnull
+  BigDecimal calculate(double amount,
+                       @Nonnull CurrencyValues spendCurrency,
+                       @Nonnull CurrencyValues desiredCurrency) {
+    try {
+      return BigDecimal.valueOf(nifflerCurrencyServiceStub.calculateRate(CalculateRequest.newBuilder()
+          .setAmount(amount)
+          .setSpendCurrency(guru.qa.grpc.niffler.grpc.CurrencyValues.valueOf(spendCurrency.name()))
+          .setDesiredCurrency(guru.qa.grpc.niffler.grpc.CurrencyValues.valueOf(desiredCurrency.name()))
+          .build()).getCalculatedAmount());
+    } catch (StatusRuntimeException e) {
+      LOG.error("### Error while calling gRPC server ", e);
+      throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
     }
+  }
 }

@@ -30,7 +30,7 @@ public class PhotoCondition {
 
 
         String src = StringUtils.substringAfter(element.getAttribute("src"), "base64,");
-        boolean matched =  src.equals(imageAsBase64);
+        boolean matched = src.equals(imageAsBase64);
 
         return new CheckResult(matched, matched ? "avatars are same" : "avatars are different");
       }

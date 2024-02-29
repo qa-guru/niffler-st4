@@ -15,19 +15,19 @@ import java.util.List;
 @Component
 public class CorsCustomizer {
 
-    private final String nifflerFrontUri;
-    private final String nifflerAuthUri;
+  private final String nifflerFrontUri;
+  private final String nifflerAuthUri;
 
-    @Autowired
-    public CorsCustomizer(@Value("${niffler-front.base-uri}") String nifflerFrontUri,
-                          @Value("${niffler-auth.base-uri}") String nifflerAuthUri) {
-        this.nifflerFrontUri = nifflerFrontUri;
-        this.nifflerAuthUri = nifflerAuthUri;
-    }
+  @Autowired
+  public CorsCustomizer(@Value("${niffler-front.base-uri}") String nifflerFrontUri,
+                        @Value("${niffler-auth.base-uri}") String nifflerAuthUri) {
+    this.nifflerFrontUri = nifflerFrontUri;
+    this.nifflerAuthUri = nifflerAuthUri;
+  }
 
-    public void corsCustomizer(@Nonnull HttpSecurity http) throws Exception {
-      http.cors(customizer());
-    }
+  public void corsCustomizer(@Nonnull HttpSecurity http) throws Exception {
+    http.cors(customizer());
+  }
 
   Customizer<CorsConfigurer<HttpSecurity>> customizer() {
     return c -> c.configurationSource(CorsCustomizer.this.corsConfigurationSource());
@@ -42,5 +42,5 @@ public class CorsCustomizer {
       cc.setAllowedMethods(List.of("*"));
       return cc;
     };
-    }
+  }
 }

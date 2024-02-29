@@ -18,47 +18,47 @@ import java.util.List;
 @RestController
 public class FriendsController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FriendsController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(FriendsController.class);
 
-    private final UserDataService userService;
+  private final UserDataService userService;
 
-    @Autowired
-    public FriendsController(UserDataService userService) {
-        this.userService = userService;
-    }
+  @Autowired
+  public FriendsController(UserDataService userService) {
+    this.userService = userService;
+  }
 
-    @GetMapping("/friends")
-    public List<UserJson> friends(@RequestParam String username,
-                                  @RequestParam boolean includePending) {
-        return userService.friends(username, includePending);
-    }
+  @GetMapping("/friends")
+  public List<UserJson> friends(@RequestParam String username,
+                                @RequestParam boolean includePending) {
+    return userService.friends(username, includePending);
+  }
 
-    @GetMapping("/invitations")
-    public List<UserJson> invitations(@RequestParam String username) {
-        return userService.invitations(username);
-    }
+  @GetMapping("/invitations")
+  public List<UserJson> invitations(@RequestParam String username) {
+    return userService.invitations(username);
+  }
 
-    @PostMapping("/acceptInvitation")
-    public List<UserJson> acceptInvitation(@RequestParam String username,
-                                           @RequestBody FriendJson invitation) {
-        return userService.acceptInvitation(username, invitation);
-    }
+  @PostMapping("/acceptInvitation")
+  public List<UserJson> acceptInvitation(@RequestParam String username,
+                                         @RequestBody FriendJson invitation) {
+    return userService.acceptInvitation(username, invitation);
+  }
 
-    @PostMapping("/declineInvitation")
-    public List<UserJson> declineInvitation(@RequestParam String username,
-                                            @RequestBody FriendJson invitation) {
-        return userService.declineInvitation(username, invitation);
-    }
+  @PostMapping("/declineInvitation")
+  public List<UserJson> declineInvitation(@RequestParam String username,
+                                          @RequestBody FriendJson invitation) {
+    return userService.declineInvitation(username, invitation);
+  }
 
-    @PostMapping("/addFriend")
-    public UserJson addFriend(@RequestParam String username,
-                              @RequestBody FriendJson friend) {
-        return userService.addFriend(username, friend);
-    }
+  @PostMapping("/addFriend")
+  public UserJson addFriend(@RequestParam String username,
+                            @RequestBody FriendJson friend) {
+    return userService.addFriend(username, friend);
+  }
 
-    @DeleteMapping("/removeFriend")
-    public List<UserJson> removeFriend(@RequestParam String username,
-                                       @RequestParam String friendUsername) {
-        return userService.removeFriend(username, friendUsername);
-    }
+  @DeleteMapping("/removeFriend")
+  public List<UserJson> removeFriend(@RequestParam String username,
+                                     @RequestParam String friendUsername) {
+    return userService.removeFriend(username, friendUsername);
+  }
 }

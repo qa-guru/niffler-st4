@@ -14,20 +14,20 @@ import java.util.List;
 @RestController
 public class CategoriesController {
 
-    private final CategoryService categoryService;
+  private final CategoryService categoryService;
 
-    @Autowired
-    public CategoriesController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
+  @Autowired
+  public CategoriesController(CategoryService categoryService) {
+    this.categoryService = categoryService;
+  }
 
-    @GetMapping("/categories")
-    public List<CategoryJson> getCategories(@RequestParam String username) {
-        return categoryService.getAllCategories(username);
-    }
+  @GetMapping("/categories")
+  public List<CategoryJson> getCategories(@RequestParam String username) {
+    return categoryService.getAllCategories(username);
+  }
 
-    @PostMapping("/category")
-    public CategoryJson addCategory(@RequestBody CategoryJson category) {
-        return categoryService.addCategory(category);
-    }
+  @PostMapping("/category")
+  public CategoryJson addCategory(@RequestBody CategoryJson category) {
+    return categoryService.addCategory(category);
+  }
 }

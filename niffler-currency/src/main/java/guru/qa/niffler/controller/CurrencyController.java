@@ -16,20 +16,20 @@ import java.util.List;
 @RestController
 public class CurrencyController {
 
-    private final CurrencyService currencyService;
+  private final CurrencyService currencyService;
 
-    @Autowired
-    public CurrencyController(CurrencyService currencyService) {
-        this.currencyService = currencyService;
-    }
+  @Autowired
+  public CurrencyController(CurrencyService currencyService) {
+    this.currencyService = currencyService;
+  }
 
-    @GetMapping("/getAllCurrencies")
-    public List<CurrencyJson> getAllCurrencies() {
-        return currencyService.getAllCurrencies();
-    }
+  @GetMapping("/getAllCurrencies")
+  public List<CurrencyJson> getAllCurrencies() {
+    return currencyService.getAllCurrencies();
+  }
 
-    @PostMapping("/calculate")
-    public CurrencyCalculateJson getAllCurrencies(@RequestBody CurrencyCalculateJson currencyCalculate) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "POST method /calculate not implemented");
-    }
+  @PostMapping("/calculate")
+  public CurrencyCalculateJson getAllCurrencies(@RequestBody CurrencyCalculateJson currencyCalculate) {
+    throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "POST method /calculate not implemented");
+  }
 }

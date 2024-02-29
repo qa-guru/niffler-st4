@@ -132,6 +132,7 @@ dependencies {
     testImplementation "io.grpc:grpc-stub:${grpcVersion}"
     testImplementation "io.grpc:grpc-netty:${grpcVersion}"
     testImplementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+    testImplementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
     testImplementation project(':niffler-grpc-common')
     compileOnly 'jakarta.annotation:jakarta.annotation-api:1.3.5' // Java 9+ compatibility - Do NOT update to 2.0.0
     // SOAP

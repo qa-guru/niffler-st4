@@ -13,20 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class NifflerUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    @Autowired
-    public NifflerUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  @Autowired
+  public NifflerUserDetailsService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Username: " + username + " not found");
-        }
-        return new NifflerUserPrincipal(user);
+  @Override
+  @Transactional(readOnly = true)
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    UserEntity user = userRepository.findByUsername(username);
+    if (user == null) {
+      throw new UsernameNotFoundException("Username: " + username + " not found");
     }
+    return new NifflerUserPrincipal(user);
+  }
 }

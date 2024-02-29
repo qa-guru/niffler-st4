@@ -11,15 +11,15 @@ import java.util.List;
 @RestController
 public class CurrencyController {
 
-    private final GrpcCurrencyClient grpcCurrencyClient;
+  private final GrpcCurrencyClient grpcCurrencyClient;
 
-    @Autowired
-    public CurrencyController(GrpcCurrencyClient grpcCurrencyClient) {
-        this.grpcCurrencyClient = grpcCurrencyClient;
-    }
+  @Autowired
+  public CurrencyController(GrpcCurrencyClient grpcCurrencyClient) {
+    this.grpcCurrencyClient = grpcCurrencyClient;
+  }
 
-    @GetMapping("/allCurrencies")
-    public List<CurrencyJson> getAllCurrencies() {
-        return grpcCurrencyClient.getAllCurrencies();
-    }
+  @GetMapping("/allCurrencies")
+  public List<CurrencyJson> getAllCurrencies() {
+    return grpcCurrencyClient.getAllCurrencies();
+  }
 }

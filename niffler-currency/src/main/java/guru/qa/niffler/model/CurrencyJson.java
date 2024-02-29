@@ -7,12 +7,12 @@ import guru.qa.niffler.data.CurrencyValues;
 import javax.annotation.Nonnull;
 
 public record CurrencyJson(
-        @JsonProperty("currency")
-        CurrencyValues currency,
-        @JsonProperty("currencyRate")
-        Double currencyRate) {
+    @JsonProperty("currency")
+    CurrencyValues currency,
+    @JsonProperty("currencyRate")
+    Double currencyRate) {
 
-    public static @Nonnull CurrencyJson fromEntity(@Nonnull CurrencyEntity entity) {
-        return new CurrencyJson(entity.getCurrency(), entity.getCurrencyRate());
-    }
+  public static @Nonnull CurrencyJson fromEntity(@Nonnull CurrencyEntity entity) {
+    return new CurrencyJson(entity.getCurrency(), entity.getCurrencyRate());
+  }
 }

@@ -12,18 +12,18 @@ import java.util.List;
 @Component
 public class CurrencyService {
 
-    private final CurrencyRepository currencyRepository;
+  private final CurrencyRepository currencyRepository;
 
-    @Autowired
-    public CurrencyService(CurrencyRepository currencyRepository) {
-        this.currencyRepository = currencyRepository;
-    }
+  @Autowired
+  public CurrencyService(CurrencyRepository currencyRepository) {
+    this.currencyRepository = currencyRepository;
+  }
 
-    @Transactional(readOnly = true)
-    public @Nonnull
-    List<CurrencyJson> getAllCurrencies() {
-        return currencyRepository.findAll().stream()
-                .map(CurrencyJson::fromEntity)
-                .toList();
-    }
+  @Transactional(readOnly = true)
+  public @Nonnull
+  List<CurrencyJson> getAllCurrencies() {
+    return currencyRepository.findAll().stream()
+        .map(CurrencyJson::fromEntity)
+        .toList();
+  }
 }

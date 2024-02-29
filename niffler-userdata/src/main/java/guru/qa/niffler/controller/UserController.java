@@ -16,27 +16,27 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-    private final UserDataService userService;
+  private final UserDataService userService;
 
-    @Autowired
-    public UserController(UserDataService userService) {
-        this.userService = userService;
-    }
+  @Autowired
+  public UserController(UserDataService userService) {
+    this.userService = userService;
+  }
 
-    @PostMapping("/updateUserInfo")
-    public UserJson updateUserInfo(@RequestBody UserJson user) {
-        return userService.update(user);
-    }
+  @PostMapping("/updateUserInfo")
+  public UserJson updateUserInfo(@RequestBody UserJson user) {
+    return userService.update(user);
+  }
 
-    @GetMapping("/currentUser")
-    public UserJson currentUser(@RequestParam String username) {
-        return userService.getCurrentUser(username);
-    }
+  @GetMapping("/currentUser")
+  public UserJson currentUser(@RequestParam String username) {
+    return userService.getCurrentUser(username);
+  }
 
-    @GetMapping("/allUsers")
-    public List<UserJson> allUsers(@RequestParam String username) {
-        return userService.allUsers(username);
-    }
+  @GetMapping("/allUsers")
+  public List<UserJson> allUsers(@RequestParam String username) {
+    return userService.allUsers(username);
+  }
 }

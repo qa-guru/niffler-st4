@@ -14,21 +14,21 @@ import java.util.List;
 @Component
 public class StatisticAggregator {
 
-    private final RestSpendClient restSpendClient;
-    private final UserDataClient userDataClient;
+  private final RestSpendClient restSpendClient;
+  private final UserDataClient userDataClient;
 
-    @Autowired
-    public StatisticAggregator(RestSpendClient restSpendClient,
-                               UserDataClient userDataClient) {
-        this.restSpendClient = restSpendClient;
-        this.userDataClient = userDataClient;
-    }
+  @Autowired
+  public StatisticAggregator(RestSpendClient restSpendClient,
+                             UserDataClient userDataClient) {
+    this.restSpendClient = restSpendClient;
+    this.userDataClient = userDataClient;
+  }
 
-    public @Nonnull
-    List<StatisticJson> enrichStatisticRequest(@Nonnull String username,
-                                               @Nullable CurrencyValues filterCurrency,
-                                               @Nullable DataFilterValues filterPeriod) {
-        CurrencyValues userDefaultCurrency = userDataClient.currentUser(username).currency();
-        return restSpendClient.statistic(username, userDefaultCurrency, filterCurrency, filterPeriod);
-    }
+  public @Nonnull
+  List<StatisticJson> enrichStatisticRequest(@Nonnull String username,
+                                             @Nullable CurrencyValues filterCurrency,
+                                             @Nullable DataFilterValues filterPeriod) {
+    CurrencyValues userDefaultCurrency = userDataClient.currentUser(username).currency();
+    return restSpendClient.statistic(username, userDefaultCurrency, filterCurrency, filterPeriod);
+  }
 }

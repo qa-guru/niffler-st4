@@ -16,27 +16,27 @@ import java.util.List;
 @RestController
 public class CategoriesController {
 
-    private final RestSpendClient restSpendClient;
+  private final RestSpendClient restSpendClient;
 
-    @Autowired
-    public CategoriesController(RestSpendClient restSpendClient) {
-        this.restSpendClient = restSpendClient;
-    }
+  @Autowired
+  public CategoriesController(RestSpendClient restSpendClient) {
+    this.restSpendClient = restSpendClient;
+  }
 
-    @GetMapping("/categories")
-    public List<CategoryJson> getCategories(@AuthenticationPrincipal Jwt principal) {
-        String username = principal.getClaim("sub");
-        return restSpendClient.getCategories(username);
-    }
+  @GetMapping("/categories")
+  public List<CategoryJson> getCategories(@AuthenticationPrincipal Jwt principal) {
+    String username = principal.getClaim("sub");
+    return restSpendClient.getCategories(username);
+  }
 
-    @PostMapping("/category")
-    public CategoryJson addCategory(@AuthenticationPrincipal Jwt principal,
-                                    @Valid @RequestBody CategoryJson category) {
-        String username = principal.getClaim("sub");
-        return restSpendClient.addCategory(new CategoryJson(
-                category.id(),
-                category.category(),
-                username
-        ));
-    }
+  @PostMapping("/category")
+  public CategoryJson addCategory(@AuthenticationPrincipal Jwt principal,
+                                  @Valid @RequestBody CategoryJson category) {
+    String username = principal.getClaim("sub");
+    return restSpendClient.addCategory(new CategoryJson(
+        category.id(),
+        category.category(),
+        username
+    ));
+  }
 }

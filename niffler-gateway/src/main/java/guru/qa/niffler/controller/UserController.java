@@ -20,31 +20,31 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-    private final UserDataClient userDataClient;
+  private final UserDataClient userDataClient;
 
-    @Autowired
-    public UserController(UserDataClient userDataClient) {
-        this.userDataClient = userDataClient;
-    }
+  @Autowired
+  public UserController(UserDataClient userDataClient) {
+    this.userDataClient = userDataClient;
+  }
 
-    @PostMapping("/updateUserInfo")
-    public UserJson updateUserInfo(@AuthenticationPrincipal Jwt principal,
-                                   @Valid @RequestBody UserJson user) {
-        String username = principal.getClaim("sub");
-        return userDataClient.updateUserInfo(user.addUsername(username));
-    }
+  @PostMapping("/updateUserInfo")
+  public UserJson updateUserInfo(@AuthenticationPrincipal Jwt principal,
+                                 @Valid @RequestBody UserJson user) {
+    String username = principal.getClaim("sub");
+    return userDataClient.updateUserInfo(user.addUsername(username));
+  }
 
-    @GetMapping("/currentUser")
-    public UserJson currentUser(@AuthenticationPrincipal Jwt principal) {
-        String username = principal.getClaim("sub");
-        return userDataClient.currentUser(username);
-    }
+  @GetMapping("/currentUser")
+  public UserJson currentUser(@AuthenticationPrincipal Jwt principal) {
+    String username = principal.getClaim("sub");
+    return userDataClient.currentUser(username);
+  }
 
-    @GetMapping("/allUsers")
-    public List<UserJson> allUsers(@AuthenticationPrincipal Jwt principal) {
-        String username = principal.getClaim("sub");
-        return userDataClient.allUsers(username);
-    }
+  @GetMapping("/allUsers")
+  public List<UserJson> allUsers(@AuthenticationPrincipal Jwt principal) {
+    String username = principal.getClaim("sub");
+    return userDataClient.allUsers(username);
+  }
 }

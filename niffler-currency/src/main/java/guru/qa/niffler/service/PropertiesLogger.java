@@ -16,44 +16,44 @@ import java.util.Objects;
 
 public class PropertiesLogger implements ApplicationListener<ApplicationPreparedEvent> {
 
-    private static final Logger log = LoggerFactory.getLogger(PropertiesLogger.class);
+  private static final Logger log = LoggerFactory.getLogger(PropertiesLogger.class);
 
-    private ConfigurableEnvironment environment;
-    private boolean isFirstRun = true;
+  private ConfigurableEnvironment environment;
+  private boolean isFirstRun = true;
 
-    @Override
-    public void onApplicationEvent(@Nonnull ApplicationPreparedEvent event) {
-        if (isFirstRun) {
-            environment = event.getApplicationContext().getEnvironment();
-            printProperties();
-        }
-        isFirstRun = false;
+  @Override
+  public void onApplicationEvent(@Nonnull ApplicationPreparedEvent event) {
+    if (isFirstRun) {
+      environment = event.getApplicationContext().getEnvironment();
+      printProperties();
     }
+    isFirstRun = false;
+  }
 
-    public void printProperties() {
-        for (EnumerablePropertySource<?> propertySource : findPropertiesPropertySources()) {
-            log.info("******* " + propertySource.getName() + " *******");
-            String[] propertyNames = propertySource.getPropertyNames();
-            Arrays.sort(propertyNames);
-            for (String propertyName : propertyNames) {
-                String resolvedProperty = environment.getProperty(propertyName);
-                String sourceProperty = Objects.requireNonNull(propertySource.getProperty(propertyName)).toString();
-                if (Objects.equals(resolvedProperty, sourceProperty)) {
-                    log.info("{}={}", propertyName, resolvedProperty);
-                } else {
-                    log.info("{}={} OVERRIDDEN to {}", propertyName, sourceProperty, resolvedProperty);
-                }
-            }
+  public void printProperties() {
+    for (EnumerablePropertySource<?> propertySource : findPropertiesPropertySources()) {
+      log.info("******* " + propertySource.getName() + " *******");
+      String[] propertyNames = propertySource.getPropertyNames();
+      Arrays.sort(propertyNames);
+      for (String propertyName : propertyNames) {
+        String resolvedProperty = environment.getProperty(propertyName);
+        String sourceProperty = Objects.requireNonNull(propertySource.getProperty(propertyName)).toString();
+        if (Objects.equals(resolvedProperty, sourceProperty)) {
+          log.info("{}={}", propertyName, resolvedProperty);
+        } else {
+          log.info("{}={} OVERRIDDEN to {}", propertyName, sourceProperty, resolvedProperty);
         }
+      }
     }
+  }
 
-    private List<EnumerablePropertySource<?>> findPropertiesPropertySources() {
-        List<EnumerablePropertySource<?>> propertiesPropertySources = new LinkedList<>();
-        for (PropertySource<?> propertySource : environment.getPropertySources()) {
-            if (propertySource instanceof EnumerablePropertySource) {
-                propertiesPropertySources.add((EnumerablePropertySource<?>) propertySource);
-            }
-        }
-        return propertiesPropertySources;
+  private List<EnumerablePropertySource<?>> findPropertiesPropertySources() {
+    List<EnumerablePropertySource<?>> propertiesPropertySources = new LinkedList<>();
+    for (PropertySource<?> propertySource : environment.getPropertySources()) {
+      if (propertySource instanceof EnumerablePropertySource) {
+        propertiesPropertySources.add((EnumerablePropertySource<?>) propertySource);
+      }
     }
+    return propertiesPropertySources;
+  }
 }

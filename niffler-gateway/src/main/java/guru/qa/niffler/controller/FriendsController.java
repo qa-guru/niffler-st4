@@ -23,53 +23,53 @@ import java.util.List;
 @RestController
 public class FriendsController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FriendsController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(FriendsController.class);
 
-    private final UserDataClient userDataClient;
+  private final UserDataClient userDataClient;
 
-    @Autowired
-    public FriendsController(UserDataClient userDataClient) {
-        this.userDataClient = userDataClient;
-    }
+  @Autowired
+  public FriendsController(UserDataClient userDataClient) {
+    this.userDataClient = userDataClient;
+  }
 
-    @GetMapping("/friends")
-    public List<UserJson> friends(@AuthenticationPrincipal Jwt principal,
-                                  @RequestParam boolean includePending) {
-        String username = principal.getClaim("sub");
-        return userDataClient.friends(username, includePending);
-    }
+  @GetMapping("/friends")
+  public List<UserJson> friends(@AuthenticationPrincipal Jwt principal,
+                                @RequestParam boolean includePending) {
+    String username = principal.getClaim("sub");
+    return userDataClient.friends(username, includePending);
+  }
 
-    @GetMapping("/invitations")
-    public List<UserJson> invitations(@AuthenticationPrincipal Jwt principal) {
-        String username = principal.getClaim("sub");
-        return userDataClient.invitations(username);
-    }
+  @GetMapping("/invitations")
+  public List<UserJson> invitations(@AuthenticationPrincipal Jwt principal) {
+    String username = principal.getClaim("sub");
+    return userDataClient.invitations(username);
+  }
 
-    @PostMapping("/acceptInvitation")
-    public List<UserJson> acceptInvitation(@AuthenticationPrincipal Jwt principal,
-                                           @Valid @RequestBody FriendJson invitation) {
-        String username = principal.getClaim("sub");
-        return userDataClient.acceptInvitation(username, invitation);
-    }
+  @PostMapping("/acceptInvitation")
+  public List<UserJson> acceptInvitation(@AuthenticationPrincipal Jwt principal,
+                                         @Valid @RequestBody FriendJson invitation) {
+    String username = principal.getClaim("sub");
+    return userDataClient.acceptInvitation(username, invitation);
+  }
 
-    @PostMapping("/declineInvitation")
-    public List<UserJson> declineInvitation(@AuthenticationPrincipal Jwt principal,
-                                            @Valid @RequestBody FriendJson invitation) {
-        String username = principal.getClaim("sub");
-        return userDataClient.declineInvitation(username, invitation);
-    }
+  @PostMapping("/declineInvitation")
+  public List<UserJson> declineInvitation(@AuthenticationPrincipal Jwt principal,
+                                          @Valid @RequestBody FriendJson invitation) {
+    String username = principal.getClaim("sub");
+    return userDataClient.declineInvitation(username, invitation);
+  }
 
-    @PostMapping("/addFriend")
-    public UserJson addFriend(@AuthenticationPrincipal Jwt principal,
-                              @Valid @RequestBody FriendJson friend) {
-        String username = principal.getClaim("sub");
-        return userDataClient.addFriend(username, friend);
-    }
+  @PostMapping("/addFriend")
+  public UserJson addFriend(@AuthenticationPrincipal Jwt principal,
+                            @Valid @RequestBody FriendJson friend) {
+    String username = principal.getClaim("sub");
+    return userDataClient.addFriend(username, friend);
+  }
 
-    @DeleteMapping("/removeFriend")
-    public List<UserJson> removeFriend(@AuthenticationPrincipal Jwt principal,
-                                       @RequestParam("username") String friendUsername) {
-        String username = principal.getClaim("sub");
-        return userDataClient.removeFriend(username, friendUsername);
-    }
+  @DeleteMapping("/removeFriend")
+  public List<UserJson> removeFriend(@AuthenticationPrincipal Jwt principal,
+                                     @RequestParam("username") String friendUsername) {
+    String username = principal.getClaim("sub");
+    return userDataClient.removeFriend(username, friendUsername);
+  }
 }

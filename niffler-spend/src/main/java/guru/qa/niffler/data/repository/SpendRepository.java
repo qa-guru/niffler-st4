@@ -10,21 +10,21 @@ import java.util.UUID;
 
 public interface SpendRepository extends JpaRepository<SpendEntity, UUID> {
 
-    @Nonnull
-    List<SpendEntity> findAllByUsername(@Nonnull String username);
+  @Nonnull
+  List<SpendEntity> findAllByUsername(@Nonnull String username);
 
-    @Nonnull
-    List<SpendEntity> findAllByUsernameAndSpendDateGreaterThanEqual(@Nonnull String username,
-                                                                    @Nonnull Date dateFrom);
+  @Nonnull
+  List<SpendEntity> findAllByUsernameAndSpendDateGreaterThanEqual(@Nonnull String username,
+                                                                  @Nonnull Date dateFrom);
 
-    @Nonnull
-    List<SpendEntity> findAllByUsernameAndSpendDateLessThanEqual(@Nonnull String username,
-                                                                 @Nonnull Date dateTo);
+  @Nonnull
+  List<SpendEntity> findAllByUsernameAndSpendDateLessThanEqual(@Nonnull String username,
+                                                               @Nonnull Date dateTo);
 
-    @Nonnull
-    List<SpendEntity> findAllByUsernameAndSpendDateGreaterThanEqualAndSpendDateLessThanEqual(@Nonnull String username,
-                                                                                             @Nonnull Date dateFrom,
-                                                                                             @Nonnull Date dateTo);
+  @Nonnull
+  List<SpendEntity> findAllByUsernameAndSpendDateGreaterThanEqualAndSpendDateLessThanEqual(@Nonnull String username,
+                                                                                           @Nonnull Date dateFrom,
+                                                                                           @Nonnull Date dateTo);
 
-    void deleteByUsernameAndIdIn(@Nonnull String username, @Nonnull List<UUID> ids);
+  void deleteByUsernameAndIdIn(@Nonnull String username, @Nonnull List<UUID> ids);
 }

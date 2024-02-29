@@ -1,4 +1,4 @@
-package guru.qa.niffler.test;
+package guru.qa.niffler.test.web;
 
 import guru.qa.niffler.jupiter.annotation.AllureIdParam;
 import guru.qa.niffler.jupiter.converter.SpendJsonConverter;

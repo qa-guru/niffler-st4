@@ -10,6 +10,6 @@ import java.util.UUID;
 
 public interface CurrencyRepository extends JpaRepository<CurrencyEntity, UUID> {
 
-    @Nullable
-    CurrencyEntity findByCurrency(@Nonnull CurrencyValues currency);
+  @Nullable
+  CurrencyEntity findByCurrency(@Nonnull CurrencyValues currency);
 }

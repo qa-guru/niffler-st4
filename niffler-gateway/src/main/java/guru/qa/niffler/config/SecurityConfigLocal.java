@@ -19,30 +19,30 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @Profile("local")
 public class SecurityConfigLocal {
 
-    private final CorsCustomizer corsCustomizer;
+  private final CorsCustomizer corsCustomizer;
 
-    @Autowired
-    public SecurityConfigLocal(CorsCustomizer corsCustomizer) {
-        this.corsCustomizer = corsCustomizer;
-    }
+  @Autowired
+  public SecurityConfigLocal(CorsCustomizer corsCustomizer) {
+    this.corsCustomizer = corsCustomizer;
+  }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        corsCustomizer.corsCustomizer(http);
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    corsCustomizer.corsCustomizer(http);
 
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(customizer ->
-                        customizer.requestMatchers(
-                                        antMatcher("/session"),
-                                        antMatcher("/actuator/health"),
-                                        antMatcher("/graphiql/**"),
-                                        antMatcher("/graphql/**"),
-                                        antMatcher("/favicon.ico"),
-                                        antMatcher(HttpMethod.POST, "/graphql")
-                                ).permitAll()
-                                .anyRequest()
-                                .authenticated()
-                ).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
-        return http.build();
-    }
+    http.csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(customizer ->
+            customizer.requestMatchers(
+                    antMatcher("/session"),
+                    antMatcher("/actuator/health"),
+                    antMatcher("/graphiql/**"),
+                    antMatcher("/graphql/**"),
+                    antMatcher("/favicon.ico"),
+                    antMatcher(HttpMethod.POST, "/graphql")
+                ).permitAll()
+                .anyRequest()
+                .authenticated()
+        ).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+    return http.build();
+  }
 }

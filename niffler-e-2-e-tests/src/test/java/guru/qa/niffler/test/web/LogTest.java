@@ -1,4 +1,4 @@
-package guru.qa.niffler.test;
+package guru.qa.niffler.test.web;
 
 import org.junit.jupiter.api.Test;
 

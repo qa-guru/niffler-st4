@@ -22,45 +22,45 @@ import java.util.List;
 @RestController
 public class SpendController {
 
-    private final SpendService spendService;
+  private final SpendService spendService;
 
-    @Autowired
-    public SpendController(SpendService spendService) {
-        this.spendService = spendService;
-    }
+  @Autowired
+  public SpendController(SpendService spendService) {
+    this.spendService = spendService;
+  }
 
-    @GetMapping("/spends")
-    public List<SpendJson> getSpends(@RequestParam String username,
-                                     @RequestParam(required = false) CurrencyValues filterCurrency,
-                                     @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
-                                     @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) {
-        return spendService.getSpendsForUser(username, filterCurrency, from, to);
-    }
+  @GetMapping("/spends")
+  public List<SpendJson> getSpends(@RequestParam String username,
+                                   @RequestParam(required = false) CurrencyValues filterCurrency,
+                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
+                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) {
+    return spendService.getSpendsForUser(username, filterCurrency, from, to);
+  }
 
-    @GetMapping("/statistic")
-    public List<StatisticJson> getStatistic(@RequestParam String username,
-                                            @RequestParam CurrencyValues userCurrency,
-                                            @RequestParam(required = false) CurrencyValues filterCurrency,
-                                            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
-                                            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) {
-        return spendService.getStatistic(username, userCurrency, filterCurrency, from, to);
-    }
+  @GetMapping("/statistic")
+  public List<StatisticJson> getStatistic(@RequestParam String username,
+                                          @RequestParam CurrencyValues userCurrency,
+                                          @RequestParam(required = false) CurrencyValues filterCurrency,
+                                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
+                                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) {
+    return spendService.getStatistic(username, userCurrency, filterCurrency, from, to);
+  }
 
-    @PostMapping("/addSpend")
-    @ResponseStatus(HttpStatus.CREATED)
-    public SpendJson addSpend(@RequestBody SpendJson spend) {
-        return spendService.saveSpendForUser(spend);
-    }
+  @PostMapping("/addSpend")
+  @ResponseStatus(HttpStatus.CREATED)
+  public SpendJson addSpend(@RequestBody SpendJson spend) {
+    return spendService.saveSpendForUser(spend);
+  }
 
-    @PatchMapping("/editSpend")
-    public SpendJson editSpend(@RequestBody SpendJson spend) {
-        return spendService.editSpendForUser(spend);
-    }
+  @PatchMapping("/editSpend")
+  public SpendJson editSpend(@RequestBody SpendJson spend) {
+    return spendService.editSpendForUser(spend);
+  }
 
-    @DeleteMapping("/deleteSpends")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteSpends(@RequestParam String username,
-                             @RequestParam List<String> ids) {
-        spendService.deleteSpends(username, ids);
-    }
+  @DeleteMapping("/deleteSpends")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  public void deleteSpends(@RequestParam String username,
+                           @RequestParam List<String> ids) {
+    spendService.deleteSpends(username, ids);
+  }
 }
