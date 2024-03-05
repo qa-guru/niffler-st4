@@ -9,9 +9,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface User {
 
-  UserType value() default UserType.COMMON;
+  Point value() default Point.INNER;
 
-  enum UserType {
-    WITH_FRIENDS, COMMON
+  enum Point {
+    INNER, OUTER
   }
 }

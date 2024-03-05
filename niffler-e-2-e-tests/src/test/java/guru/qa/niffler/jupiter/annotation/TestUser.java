@@ -10,8 +10,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@ExtendWith(CreateUserExtension.class)
-public @interface DbUser {
+public @interface TestUser {
+  boolean fake() default false;
+
   String username() default "";
 
   String password() default "";

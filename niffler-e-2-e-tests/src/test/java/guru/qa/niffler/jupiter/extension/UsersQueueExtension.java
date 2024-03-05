@@ -1,6 +1,6 @@
 package guru.qa.niffler.jupiter.extension;
 
-import guru.qa.niffler.jupiter.annotation.User;
+import guru.qa.niffler.jupiter.annotation.UserQueue;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.TestData;
 import guru.qa.niffler.model.UserJson;
@@ -17,15 +17,15 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static guru.qa.niffler.jupiter.annotation.User.UserType.COMMON;
-import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
+import static guru.qa.niffler.jupiter.annotation.UserQueue.UserType.COMMON;
+import static guru.qa.niffler.jupiter.annotation.UserQueue.UserType.WITH_FRIENDS;
 
 public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
 
   public static final ExtensionContext.Namespace NAMESPACE
       = ExtensionContext.Namespace.create(UsersQueueExtension.class);
 
-  private static Map<User.UserType, Queue<UserJson>> users = new ConcurrentHashMap<>();
+  private static Map<UserQueue.UserType, Queue<UserJson>> users = new ConcurrentHashMap<>();
 
   static {
     Queue<UserJson> friendsQueue = new ConcurrentLinkedQueue<>();
@@ -43,7 +43,7 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
     Parameter[] parameters = context.getRequiredTestMethod().getParameters();
 
     for (Parameter parameter : parameters) {
-      User annotation = parameter.getAnnotation(User.class);
+      UserQueue annotation = parameter.getAnnotation(UserQueue.class);
       if (annotation != null && parameter.getType().isAssignableFrom(UserJson.class)) {
         UserJson testCandidate = null;
         Queue<UserJson> queue = users.get(annotation.value());
@@ -60,7 +60,7 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
   public void afterTestExecution(ExtensionContext context) throws Exception {
     UserJson userFromTest = context.getStore(NAMESPACE)
         .get(context.getUniqueId(), UserJson.class);
-    users.get(userFromTest.testData().userType()).add(userFromTest);
+    users.get(userFromTest.testData().userTypeQueue()).add(userFromTest);
   }
 
   @Override
@@ -68,7 +68,7 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
     return parameterContext.getParameter()
         .getType()
         .isAssignableFrom(UserJson.class) &&
-        parameterContext.getParameter().isAnnotationPresent(User.class);
+        parameterContext.getParameter().isAnnotationPresent(UserQueue.class);
   }
 
   @Override
@@ -77,7 +77,7 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
         .get(extensionContext.getUniqueId(), UserJson.class);
   }
 
-  private static UserJson user(String username, String password, User.UserType userType) {
+  private static UserJson user(String username, String password, UserQueue.UserType userType) {
     return new UserJson(
         null,
         username,

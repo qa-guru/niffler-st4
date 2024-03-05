@@ -7,7 +7,7 @@ import guru.qa.niffler.db.model.CurrencyValues;
 import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.repository.UserRepository;
-import guru.qa.niffler.jupiter.annotation.DbUser;
+import guru.qa.niffler.jupiter.annotation.TestUser;
 import guru.qa.niffler.jupiter.extension.UserRepositoryExtension;
 import guru.qa.niffler.page.MainPage;
 import guru.qa.niffler.page.WelcomePage;
@@ -60,7 +60,7 @@ public class LoginTest extends BaseWebTest {
     userRepository.deleteInUserdataById(user.getId());
   }
 
-  @DbUser()
+  @TestUser()
   @Test
   void statisticShouldBeVisibleAfterLogin() {
     Selenide.open(WelcomePage.URL, WelcomePage.class)

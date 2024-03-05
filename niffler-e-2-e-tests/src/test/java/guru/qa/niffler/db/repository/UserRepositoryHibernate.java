@@ -32,7 +32,6 @@ public class UserRepositoryHibernate extends JpaService implements UserRepositor
     String originalPassword = user.getPassword();
     user.setPassword(pe.encode(originalPassword));
     persist(AUTH, user);
-    user.setPassword(originalPassword);
     return user;
   }
 
