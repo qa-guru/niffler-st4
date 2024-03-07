@@ -20,7 +20,6 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.Point;
 
 import java.util.List;
 import java.util.Map;
@@ -29,10 +28,17 @@ public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecution
 
   private static final Config CFG = Config.getInstance();
   private final AuthApiClient authApiClient = new AuthApiClient();
-  private boolean initBrowser = true;
+  private final boolean initBrowser;
 
   public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(ApiLoginExtension.class);
 
+  public ApiLoginExtension() {
+    this(true);
+  }
+
+  public ApiLoginExtension(boolean initBrowser) {
+    this.initBrowser = initBrowser;
+  }
 
   @Override
   public void beforeEach(ExtensionContext extensionContext) throws Exception {
