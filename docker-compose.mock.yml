@@ -118,7 +118,7 @@ services:
     restart: always
     networks:
       - test-network
-    command: [ "--port", "8089" ]
+    command: [ "--port", "8089", "--global-response-templating", "--enable-stub-cors" ]
     volumes:
       - ./wiremock/rest:/home/wiremock
     dns_search: .

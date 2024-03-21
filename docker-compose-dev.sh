@@ -5,13 +5,13 @@ export PROFILE="${PROFILE:=docker}"
 echo '### Java version ###'
 java --version
 
-front=""
+front_path=""
 front_image=""
 if [[ "$1" = "gql" ]]; then
-  front="./niffler-frontend-gql/";
+  front_path="./${FRONT_IMAGE_NAME_GQL}/";
   front_image="${IMAGE_PREFIX}/${FRONT_IMAGE_NAME_GQL}-${PROFILE}:latest";
 else
-  front="./niffler-frontend/";
+  front_path="./${FRONT_IMAGE_NAME}/";
   front_image="${IMAGE_PREFIX}/${FRONT_IMAGE_NAME}-${PROFILE}:latest";
 fi
 
@@ -31,14 +31,14 @@ if [ ! -z "$docker_images" ]; then
 fi
 
 if [ "$1" = "push" ] || [ "$2" = "push" ]; then
-  echo "### Build & push images (front: $front) ###"
+  echo "### Build & push images (front_path: $front_path) ###"
   bash ./gradlew -Pskipjaxb jib -x :niffler-e-2-e-tests:test
-  cd "$front" || exit
+  cd "$front_path" || exit
   bash ./docker-build.sh ${PROFILE} push
 else
-  echo "### Build images (front: $front) ###"
+  echo "### Build images (front_path: $front_path) ###"
   bash ./gradlew -Pskipjaxb jibDockerBuild -x :niffler-e-2-e-tests:test
-  cd "$front" || exit
+  cd "$front_path" || exit
   bash ./docker-build.sh ${PROFILE}
 fi
 

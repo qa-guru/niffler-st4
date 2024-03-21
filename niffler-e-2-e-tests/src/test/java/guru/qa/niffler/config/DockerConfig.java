@@ -1,6 +1,7 @@
 package guru.qa.niffler.config;
 
 import com.codeborne.selenide.Configuration;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class DockerConfig implements Config {
 
@@ -10,8 +11,11 @@ public class DockerConfig implements Config {
   }
 
   static {
-    Configuration.remote = "http://localhost:4444/wd/hub";
+    Configuration.remote = "http://selenoid:4444/wd/hub";
     Configuration.browser = "chrome";
+    Configuration.browserVersion = "117.0";
+    Configuration.browserCapabilities = new ChromeOptions().addArguments("--no-sandbox");
+    Configuration.browserSize = "1980x1024";
   }
 
   @Override
@@ -22,6 +26,11 @@ public class DockerConfig implements Config {
   @Override
   public String authUrl() {
     return "http://auth.niffler.dc:9000";
+  }
+
+  @Override
+  public String spendUrl() {
+    return "http://spend.niffler.dc:8093";
   }
 
   @Override

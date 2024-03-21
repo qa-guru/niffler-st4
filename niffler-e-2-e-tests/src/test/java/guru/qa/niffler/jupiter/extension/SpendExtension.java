@@ -1,6 +1,7 @@
 package guru.qa.niffler.jupiter.extension;
 
 import guru.qa.niffler.api.SpendApi;
+import guru.qa.niffler.config.Config;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.SpendJson;
 import okhttp3.OkHttpClient;
@@ -15,13 +16,15 @@ import java.util.Optional;
 
 public class SpendExtension implements BeforeEachCallback {
 
+  private static final Config CFG = Config.getInstance();
+
   public static final ExtensionContext.Namespace NAMESPACE
       = ExtensionContext.Namespace.create(SpendExtension.class);
 
   private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
   private static final Retrofit retrofit = new Retrofit.Builder()
       .client(httpClient)
-      .baseUrl("http://127.0.0.1:8093")
+      .baseUrl(CFG.spendUrl())
       .addConverterFactory(JacksonConverterFactory.create())
       .build();
 

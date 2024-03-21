@@ -40,7 +40,7 @@ public class AuthApiClient extends RestClient {
     JsonNode responseBody = authApi.token(
         "Basic " + new String(Base64.getEncoder().encode("client:secret".getBytes(StandardCharsets.UTF_8))),
         "client",
-        "http://127.0.0.1:3000/authorized",
+        CFG.frontUrl() + "/authorized",
         "authorization_code",
         ApiLoginExtension.getCode(context),
         ApiLoginExtension.getCodeVerifier(context)

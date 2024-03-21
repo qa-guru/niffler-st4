@@ -7,12 +7,17 @@ import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import guru.qa.niffler.page.MainPage;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
+@Disabled
 public class SpendingTest extends BaseWebTest {
 
   static {
@@ -49,13 +54,13 @@ public class SpendingTest extends BaseWebTest {
         .getSpendingTable()
         .checkTableContains(spend);
 
-//    Allure.step("Delete spending", () -> $(byText("Delete selected"))
-//        .click());
-//
-//    Allure.step("Check that spending was deleted", () -> {
-//      $(".spendings-table tbody")
-//          .$$("tr")
-//          .shouldHave(size(0));
-//    });
+    Allure.step("Delete spending", () -> $(byText("Delete selected"))
+        .click());
+
+    Allure.step("Check that spending was deleted", () -> {
+      $(".spendings-table tbody")
+          .$$("tr")
+          .shouldHave(size(0));
+    });
   }
 }

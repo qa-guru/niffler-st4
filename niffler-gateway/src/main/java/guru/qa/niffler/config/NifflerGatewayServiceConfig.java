@@ -1,8 +1,11 @@
 package guru.qa.niffler.config;
 
+import guru.qa.niffler.service.UserDataClient;
+import guru.qa.niffler.service.api.RestUserDataClient;
 import guru.qa.niffler.service.ws.SoapUserDataClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -39,7 +42,8 @@ public class NifflerGatewayServiceConfig {
   }
 
   @Bean
-  public SoapUserDataClient userDataClient(Jaxb2Marshaller marshaller) {
+  @ConditionalOnProperty(prefix = "niffler-userdata", name = "client", havingValue = "soap")
+  public UserDataClient userDataClient(Jaxb2Marshaller marshaller) {
     SoapUserDataClient client = new SoapUserDataClient();
     client.setDefaultUri(nifflerUserdataBaseUri + "/ws");
     client.setMarshaller(marshaller);
