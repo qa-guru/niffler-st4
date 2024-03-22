@@ -1,7 +1,6 @@
 package guru.qa.niffler.config;
 
 import guru.qa.niffler.service.UserDataClient;
-import guru.qa.niffler.service.api.RestUserDataClient;
 import guru.qa.niffler.service.ws.SoapUserDataClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

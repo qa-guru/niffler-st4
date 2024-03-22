@@ -35,7 +35,7 @@ public class NifflerUserdataServiceConfig {
     DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
     wsdl11Definition.setPortTypeName("NifflerUserdataPort");
     wsdl11Definition.setLocationUri(nifflerUserdataBaseUri + "/ws");
-    wsdl11Definition.setTargetNamespace("niffler-userdata");
+    wsdl11Definition.setTargetNamespace(userdataSchema.getTargetNamespace());
     wsdl11Definition.setSchema(userdataSchema);
     return wsdl11Definition;
   }

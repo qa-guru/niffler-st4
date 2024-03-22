@@ -14,6 +14,8 @@ public interface Config {
 
   String spendUrl();
 
+  String userdataUrl();
+
   String gatewayUrl();
 
   String jdbcHost();

@@ -21,7 +21,7 @@ logging:
     name: 'gateway.log'
 
 niffler-userdata:
-  client: rest
+  client: soap
 
 ---
 spring:
