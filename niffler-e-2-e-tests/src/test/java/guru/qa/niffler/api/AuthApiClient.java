@@ -5,6 +5,7 @@ import guru.qa.niffler.api.interceptor.CodeInterceptor;
 import guru.qa.niffler.jupiter.extension.ApiLoginExtension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -48,5 +49,10 @@ public class AuthApiClient extends RestClient {
 
     final String token = responseBody.get("id_token").asText();
     ApiLoginExtension.setToken(context, token);
+  }
+
+  public void register(String username, String password) throws IOException {
+    authApi.registerForm().execute();
+    authApi.submitRegister(username, password, password, ApiLoginExtension.getCsrfToken()).execute();
   }
 }

@@ -1,5 +1,7 @@
 package guru.qa.niffler.config;
 
+import java.util.List;
+
 public interface Config {
 
   static Config getInstance() {
@@ -22,6 +24,8 @@ public interface Config {
 
   String currencyGrpcHost();
 
+  String kafkaAddress();
+
   default String jdbcUser() {
     return "postgres";
   }
@@ -36,5 +40,9 @@ public interface Config {
 
   default int currencyGrpcPort() {
     return 8092;
+  }
+
+  default List<String> kafkaTopics() {
+    return List.of("users");
   }
 }

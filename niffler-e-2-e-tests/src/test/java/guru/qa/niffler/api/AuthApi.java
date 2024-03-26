@@ -85,6 +85,17 @@ public interface AuthApi {
       @Query("code_verifier") String codeVerifier
   );
 
+
+  @GET("/register")
+  Call<Void> registerForm();
+
+  @POST("/register")
+  @FormUrlEncoded
+  Call<Void> submitRegister(@Field("username") String username,
+                            @Field("password") String password,
+                            @Field("passwordSubmit") String passwordSubmit,
+                            @Field("_csrf") String csrf);
+
 //  {
 //    "access_token": "eyJraWQiOiI0NTFjYzVhOS1jNTdhLTRhM2EtOWZmNC1jMmVjZjY5Yzg3YTkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJkdWNrIiwiYXVkIjoiY2xpZW50IiwibmJmIjoxNzA4MzY0MDI4LCJzY29wZSI6WyJvcGVuaWQiXSwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo5MDAwIiwiZXhwIjoxNzA4MzY3NjI4LCJpYXQiOjE3MDgzNjQwMjh9.obuCCaRcAzGJaQ3HklXh5lRaSRzpAtSVcPJKxre4fOWe4_pM5lk8AWhO8JSdYdEe-vIbtaw_jlyIzHqPcoNeRYR4yNJ85bx05k4bs2q9MAYNsTIk2_qXq9Q-cF99XvcOYT0JZpGRYj-YvaeD3DdEooSuCYxtRHhJequLBmVnQ85vuERlBOQqMkf2YCANcxdY3y4fJeMIXURL4qt1J1GbB65qS3jw0Hiiaw3ulGvojDZ1wICuaN129B56SKj1Bgo1iPY421kXladDYgUZvkh-iKSOhLIFObgYEKR-wb-OVC9V0LI66co2JZ7639Q9yoj4v07QUxBhR8j66XLlTAW6RQ",
 //      "refresh_token": "GSbx5kp2pvCcPAduMozpm8FJ-aGLS7E7bkk8Xc4votWGMPrvoHwH1ZbCdTubQ4NkuFV9yePy3_1gvnczJ7QcP_hVG8g-Ey8TVcsl4gCPOgoyZbaAzFSScs3wwLX3Qz2w",

@@ -52,4 +52,9 @@ public class DockerConfig implements Config {
   public String currencyGrpcHost() {
     return "currency.niffler.dc";
   }
+
+  @Override
+  public String kafkaAddress() {
+    return "kafka:9092";
+  }
 }
