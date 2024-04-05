@@ -1,7 +1,6 @@
 package guru.qa.niffler.db;
 
 import guru.qa.niffler.config.Config;
-import guru.qa.niffler.db.jpa.ThreadSafeEntityManagerFactory;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
@@ -26,9 +25,7 @@ public enum EmfProvider {
 //      settings.put("hibernate.connection.driver_class", "org.postgresql.Driver");
       settings.put("hibernate.connection.driver_class", "com.p6spy.engine.spy.P6SpyDriver");
       settings.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-      return new ThreadSafeEntityManagerFactory(
-          Persistence.createEntityManagerFactory("niffler-st4", settings)
-      );
+      return Persistence.createEntityManagerFactory("niffler-st4", settings);
     });
   }
 
