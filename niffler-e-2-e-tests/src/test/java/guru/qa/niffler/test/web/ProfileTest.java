@@ -12,7 +12,55 @@ public class ProfileTest extends BaseWebTest {
 
   @Test
   @ApiLogin(user = @TestUser)
-  void avatarShouldBeDisplayedInHeader(@User() UserJson user) {
+  void avatarShouldBeDisplayedInHeader0(@User() UserJson user) {
+    new MainPage()
+        .waitForPageLoaded()
+        .getHeader()
+        .toProfilePage()
+        .setAvatar("images/duck.jpg")
+        .submitProfile()
+        .checkToasterMessage(SuccessMsg.PROFILE_UPDATED);
+
+    new MainPage()
+        .getHeader()
+        .checkAvatar("images/duck.jpg");
+  }
+
+  @Test
+  @ApiLogin(user = @TestUser)
+  void avatarShouldBeDisplayedInHeader1(@User() UserJson user) {
+    new MainPage()
+        .waitForPageLoaded()
+        .getHeader()
+        .toProfilePage()
+        .setAvatar("images/duck.jpg")
+        .submitProfile()
+        .checkToasterMessage(SuccessMsg.PROFILE_UPDATED);
+
+    new MainPage()
+        .getHeader()
+        .checkAvatar("images/duck.jpg");
+  }
+
+  @Test
+  @ApiLogin(user = @TestUser)
+  void avatarShouldBeDisplayedInHeader2(@User() UserJson user) {
+    new MainPage()
+        .waitForPageLoaded()
+        .getHeader()
+        .toProfilePage()
+        .setAvatar("images/duck.jpg")
+        .submitProfile()
+        .checkToasterMessage(SuccessMsg.PROFILE_UPDATED);
+
+    new MainPage()
+        .getHeader()
+        .checkAvatar("images/duck.jpg");
+  }
+
+  @Test
+  @ApiLogin(user = @TestUser)
+  void avatarShouldBeDisplayedInHeader3(@User() UserJson user) {
     new MainPage()
         .waitForPageLoaded()
         .getHeader()

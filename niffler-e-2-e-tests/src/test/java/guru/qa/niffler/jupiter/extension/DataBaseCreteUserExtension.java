@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 public class DataBaseCreteUserExtension extends CreateUserExtension {
 
-  private static UserRepository userRepository = new UserRepositoryHibernate();
+  private final UserRepository userRepository = new UserRepositoryHibernate();
 
   @Override
   public UserJson createUser(TestUser user) {

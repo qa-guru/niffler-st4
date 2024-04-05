@@ -2,6 +2,7 @@ package guru.qa.niffler.db.repository;
 
 import guru.qa.niffler.db.EmfProvider;
 import guru.qa.niffler.db.jpa.JpaService;
+import guru.qa.niffler.db.jpa.ThreadLocalEntityManager;
 import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -21,8 +22,8 @@ public class UserRepositoryHibernate extends JpaService implements UserRepositor
   public UserRepositoryHibernate() {
     super(
         Map.of(
-            AUTH, EmfProvider.INSTANCE.emf(AUTH).createEntityManager(),
-            USERDATA, EmfProvider.INSTANCE.emf(USERDATA).createEntityManager()
+            AUTH, new ThreadLocalEntityManager(EmfProvider.INSTANCE.emf(AUTH)),
+            USERDATA, new ThreadLocalEntityManager(EmfProvider.INSTANCE.emf(USERDATA))
         )
     );
   }
